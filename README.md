@@ -371,7 +371,7 @@ MgsApi.getInstance().invokeFeature("createRoom", requestCode, params, new MgsFea
   "roomIdFromCp":"1234", //游戏方房间号
   "roomLimit":2, //游戏方房间容量
   "roomName":"房间名称", //房间名称
-  "roomState":0,  //房间状态，取值（0: 可加入 1: 正在玩 2: 已销毁）
+  "roomState":0,  //房间状态，取值 - 0: 可加入 1: 正在玩 (不可加入) 2: 游戏结束
   "roomShowNum": "100038"// 房间显示号
 } 
 ```
