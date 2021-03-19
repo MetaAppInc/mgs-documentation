@@ -20,8 +20,10 @@ Room是一种组织形式，拥有一定数量的成员，具有容量和状态�
 Team是一种特殊形式的Room，本质还是Room，并且值得注意的是 **Room的id和Team的id是用的同一个存储体系，不可以重复**。  
 但Team比room多一些属性，例如 **parentRoomIdFromCp** ，则代表了Team和父房间是有关系的。  
 Team必须要有父Room，否则无意义，还不如直接使用Room。  
-下图中Team2和Team3的 **parentRoomIdFromCp** 是Room1。
+下图中Team2和Team3的 **parentRoomIdFromCp** 是Room1。 
+
 ![img_1.png](img/Room-Team-1.png)
+
 Team只有在特殊场景下才可以使用，例如5V5等组队对战的情况
 
 # Room/Team的能力
