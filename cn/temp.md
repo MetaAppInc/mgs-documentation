@@ -6,10 +6,12 @@
 |  名词   | 解释  |
 |  ----  | ----  |
 | Room  | 房间 |
-| Team  | 组 |
-| roomIdFromCp  | 房间或者组的ID(来自CP) |
-| roomShowNum  | 房间或者组的MGS ID(用于展示和搜索) |
-| roomState  | 房间或者组的状态|
+| Team  | 队伍 |
+| voice  | 语音|
+| roomChat  | 聊天室|
+| roomIdFromCp  | 房间或者队伍的ID(来自CP) |
+| roomShowNum  | 房间或者队伍的MGS ID(用于展示和搜索) |
+| roomState  | 房间或者队伍的状态|
 
 # Room
 Room是一种组织形式，拥有一定数量的成员，具有容量和状态。
@@ -22,7 +24,7 @@ Team必须要有父Room，否则无意义，还不如直接使用Room。
 
 ![img_1.png](img/Room-Team-1.png)
 
-Team只有在特殊场景下才可以使用，例如5V5等组队对战的情况
+Team只有在特殊场景下才可以使用，例如5V5等队伍对战的情况
 
 # Room/Team的能力
 Room内有两种能力，**开麦** 和 **聊天室**。  
@@ -38,7 +40,7 @@ Room内有两种能力，**开麦** 和 **聊天室**。
 |  ----  | ----  |
 | 0  | 无 |
 | 1  | 房间 |
-| 2  | 组  |
+| 2  | 队伍  |
 
 例如下图所示，如果创建Team时，**voiceScope** 是2，则开麦的能力迁移至Team
 
