@@ -16,18 +16,6 @@
 # Room
 Room是一种组织形式，拥有一定数量的成员，具有容量和状态。
 
-# Team
-Team是一种特殊形式的Room，本质还是Room，并且值得注意的是 **Room的id和Team的id是用的同一个存储体系，不可以重复**。  
-但Team比room多一些属性，例如 **parentRoomIdFromCp** ，则代表了Team和父房间是有关系的。  
-Team必须要有父Room，否则无意义，还不如直接使用Room。  
-下图中Team2和Team3的 **parentRoomIdFromCp** 是Room1。 
-
-![img_1.png](img/Room-Team-1.png)
-
-Team只有在特殊场景下才可以使用，例如5V5等队伍对战的情况，
-这种情况是房间有10个人，但是需要分配成2个队伍，
-每个队伍5个人进行对抗。
-
 # Room的能力
 当前Room内有两种能力，**语音** 和 **聊天室**。  
 **语音** 指房间内的成员可以通过即时语音进行沟通。  
@@ -37,6 +25,19 @@ Team只有在特殊场景下才可以使用，例如5V5等队伍对战的情况�
 ### 开发者后台
 需要开启 **语音** 和 **聊天室** 的开关。
 ![img.png](img/mgs-config.png)
+
+
+# Team
+Team是一种特殊形式的Room，本质还是Room，并且值得注意的是 **Room的id和Team的id是用的同一个存储体系，不可以重复**。  
+但Team比room多一些属性，例如 **parentRoomIdFromCp** ，则代表了Team和父房间是有关系的。  
+Team必须要有父Room，否则无意义，还不如直接使用Room。  
+下图中Team2和Team3的 **parentRoomIdFromCp** 是Room1。
+
+![img_1.png](img/Room-Team-1.png)
+
+Team只有在特殊场景下才可以使用，例如5V5等队伍对战的情况，
+这种情况是房间有10个人，但是需要分配成2个队伍，
+每个队伍5个人进行对抗。
 
 # Room和Team并存下的能力分布
 由于Room(或Team)都拥有语音和聊天室两种能力，在Room和Team并存的情况下，两种能力该如何分配呢？  
