@@ -16,6 +16,11 @@
 # Room
 Room是一种组织形式，拥有一定数量的成员，具有容量和状态。
 
+# Room的生命周期
+房间的生命周期应该如下图所示
+
+![img.png](img/room-lifecycle.png)
+
 # Room的能力
 当前Room内有两种能力，**语音** 和 **聊天室**。  
 **语音** 指房间内的成员可以通过即时语音进行沟通。  
@@ -33,7 +38,7 @@ Team是一种特殊形式的Room，本质还是Room，并且值得注意的是 *
 Team必须要有父Room，否则无意义，还不如直接使用Room。  
 下图中Team2和Team3的 **parentRoomIdFromCp** 是Room1。
 
-![img_1.png](img/Room-Team-1.png)
+![img_1.png](img/room-team-1.png)
 
 Team只有在特殊场景下才可以使用，例如5V5等队伍对战的情况，
 这种情况是房间有10个人，但是需要分配成2个队伍，
@@ -52,4 +57,4 @@ Team只有在特殊场景下才可以使用，例如5V5等队伍对战的情况�
 
 例如下图所示，如果创建Team时，**voiceScope** 是2，则语音的能力迁移至Team
 
-![img.png](img/Room-Team-2.png)
+![img.png](img/room-team-2.png)
