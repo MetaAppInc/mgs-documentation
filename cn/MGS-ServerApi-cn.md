@@ -62,22 +62,11 @@ sign=MD5(stringSignTemp).toUpperCase()="10F8FA8998F16521CA6F7BCF43823A67" //注�
 请参考服务端DEMO(`src/main/java/com/mgs/cloud/game/server/utils/SignUtil.java`)
 
 
-# 接口目录
+# 开放用户接口--游戏服务器专用
 
 |  接口   | 描述 |
 |  ----  | ----  |
 | 查询用户信息  | 用于验证用户有效性以及获取用户信息的接口 |
-| 创建房间  | 游戏服务端可以在创建房间后调用MGS的创建房间接口 |
-| 销毁房间  | 游戏方房间若销毁了，需要同步给MGS进行房间销毁。|
-| 同步房间信息  | 同步房间信息,每次同步修改的内容 |
-| 移除房间成员  | 当用户掉线等需要删除异常用户的场景使用 |
-| 搜索房间(可选)  | 通过MGS房间号查询cp的房间号，同时MGS SDK也提供了相同能力的接口 |
-| 查询房间信息(用于调试)  | 查询房间信息,用来调试 |
-| 查询房间记录(用于调试) | 可以查询房间的整个生命周期的所有记录， 用来调试对比cp方和mgs这边的操作是否一致,用来调试 |
-| 同步房间成员（不建议使用）  | 游戏方需要根据房间内成员信息同步给MGS,每次同步全员数据 |
-
-
-# 开放用户接口--游戏服务器专用
 
 ## 查询用户信息
 
@@ -119,6 +108,17 @@ sign=MD5(stringSignTemp).toUpperCase()="10F8FA8998F16521CA6F7BCF43823A67" //注�
 
 
 # 房间接口--游戏服务器专用
+
+|  接口   | 描述 |
+|  ----  | ----  |
+| 创建房间  | 游戏服务端可以在创建房间后调用MGS的创建房间接口 |
+| 销毁房间  | 游戏方房间若销毁了，需要同步给MGS进行房间销毁。|
+| 同步房间信息  | 同步房间信息,每次同步修改的内容 |
+| 移除房间成员  | 当用户掉线等需要删除异常用户的场景使用 |
+| 搜索房间(可选)  | 通过MGS房间号查询cp的房间号，同时MGS SDK也提供了相同能力的接口 |
+| 查询房间信息(用于调试)  | 查询房间信息,用来调试 |
+| 查询房间记录(用于调试) | 可以查询房间的整个生命周期的所有记录， 用来调试对比cp方和mgs这边的操作是否一致,用来调试 |
+| 同步房间成员（不建议使用）  | 游戏方需要根据房间内成员信息同步给MGS,每次同步全员数据 |
 
 
 ## 创建房间
@@ -425,7 +425,320 @@ sign=MD5(stringSignTemp).toUpperCase()="10F8FA8998F16521CA6F7BCF43823A67" //注�
 ```javascript
 {
   "roomIdFromCp": "", //来自cp的房间ID,必传
-  "openIdList": ["openId1","openId2","openId3"] //房间成员容量 
+  "openIdList": ["openId1","openId2","openId3"] //房间成员
+}
+``` 
+
+**响应**:
+
+```javascript
+{
+  "code": 200, //错误码, 200是成功，其他都为失败
+  "data": true, //成功返回true，失败返回false
+  "message": ""  //错误描述
+}
+```
+
+
+
+# 队伍接口--游戏服务器专用(选用)
+
+|  接口   | 描述 |
+|  ----  | ----  |
+| 创建队伍  | 游戏服务端可以在创建队伍后调用MGS的创建队伍接口 |
+| 销毁队伍  | 游戏方队伍若销毁了，需要同步给MGS进行队伍销毁。|
+| 同步队伍信息  | 同步队伍信息,每次同步修改的内容 |
+| 同步队伍成员（必须使用）  | 游戏方需要根据队伍内成员信息同步给MGS,每次同步全员数据 |
+| 移除队伍成员  | 当用户掉线等需要删除异常用户的场景使用 |
+| 查询队伍信息(用于调试)  | 查询队伍信息,用来调试 |
+| 查询队伍记录(用于调试) | 可以查询队伍的整个生命周期的所有记录， 用来调试对比cp方和mgs这边的操作是否一致,用来调试 |
+
+
+## 创建队伍
+
+**接口描述**:
+
+游戏服务端可以在创建队伍后调用MGS的创建队伍接口。
+
+**接口地址**:`/api/cp/mgsCp/team/create`
+
+**请求方式**:`POST`
+
+**请求数据类型**:`application/json`
+
+**请求**:
+
+```javascript
+{
+  "roomIdFromCp": "111dddd", //来自cp的队伍ID,必传
+  "roomLimit": 4, //队伍成员容量,必传
+  "roomName": "今天天气真好", //队伍名称,必传
+  "roomState":0, // 队伍状态:0准备中,1游戏中,2游戏结束,必传
+  "roomTags": ["大乱斗","5V5"] //队伍标签,没有则不传,选传
+  "canVoice": true, // 是否使用开麦,默认开启,选传
+  "canRoomChat": true, // 是否使用聊天室,默认开启,选传
+  "parentIdFromCp": "123124", // 父房间ID(来自cp)
+  "voiceScope": 2, // 语音能力范围: 0无,1Room,2Team
+  "roomChatScope": 1, // 聊天室能力范围: 0无,1Room,2Team
+}
+```
+
+**响应**:
+
+```javascript
+{
+	"code": 200,//错误码, 200是成功，其他都为失败
+	"data": {
+		"roomIdFromCp": "111dddd", //来自cp的房间ID
+		"roomLimit": 0, //房间成员容量
+		"roomName": "今天天气不错", //房间名称
+        "roomShowNum": "100123", //MGS房间号
+		"roomState": 0, //房间状态:0准备中,1游戏中,2游戏结束
+        "roomTags": ["大乱斗","5V5"], //房间标签
+        "canVoice": true, // 是否使用开麦
+        "canRoomChat": true, // 是否使用聊天室
+        "memberList": [], //房间成员列表
+        "parentIdFromCp": "123124", // 父房间ID(来自cp)
+        "voiceScope": 2, // 语音能力范围: 0无,1Room,2Team
+        "roomChatScope": 1, // 聊天室能力范围: 0无,1Room,2Team
+    },
+	"message": "" //错误描述
+}
+```
+
+
+## 销毁队伍
+
+**接口描述**:
+
+游戏方队伍若销毁了，需要同步给MGS进行队伍销毁。
+
+**接口地址**:`/api/cp/mgsCp/team/destroy`
+
+**请求方式**:`POST`
+
+**请求数据类型**:`application/json`
+
+**请求**:
+
+```javascript
+{
+  "roomIdFromCp": "" //来自cp的队伍ID,必传
+}
+``` 
+
+**响应**:
+
+```javascript
+{
+	"code": 200, //错误码, 200是成功，其他都为失败
+	"data": true, //成功返回true，失败返回false
+	"message": ""  //错误描述
+}
+```
+
+## 同步队伍信息
+
+**接口描述**:
+
+同步队伍信息,每次同步修改的内容  
+只有当有信息变更的时候才调用此接口，例如游戏状态从 **准备中** 变成 **游戏中**
+
+**接口地址**:`/api/cp/mgsCp/team/syncInfo`
+
+**请求方式**:`POST`
+
+**请求数据类型**:`application/json`
+
+**请求**:
+
+```javascript
+{
+  "roomIdFromCp": "", //来自cp的队伍ID,必传
+  "roomName": "", // 队伍名称
+  "roomState": 0, //队伍状态:0准备中,1游戏中,2游戏结束
+  "roomTags": ["大乱斗","5V5"] //队伍标签，数组
+}
+```
+
+**响应**:
+
+```javascript
+{
+  "code": 200, //错误码, 200是成功，其他都为失败
+  "data": true, //成功返回true，失败返回false
+  "message": ""  //错误描述
+}
+```
+
+## 移除队伍成员
+
+**接口描述**:
+
+**当用户掉线等需要删除异常用户的场景使用**  
+调用此接口，MGS服务器会通知队伍内其他成员，有成员离开队伍
+
+**接口地址**:`/api/cp/mgsCp/team/removeMember`
+
+**请求方式**:`POST`
+
+**请求数据类型**:`application/json`
+
+**请求**:
+
+```javascript
+{
+  "roomIdFromCp": "", //来自cp的队伍ID,必传
+  "openId": "2ffefdgdsfsdf" //被移除的成员,必传
+}
+``` 
+
+**响应**:
+
+```javascript
+{
+  "code": 200, //错误码, 200是成功，其他都为失败
+  "data": true, //成功返回true，失败返回false
+  "message": ""  //错误描述
+}
+```
+
+
+## 查询队伍信息(可选,用于调试)
+
+**接口描述**:
+
+查询队伍信息,可选,用来调试
+
+**接口地址**:`/api/cp/mgsCp/team/queryInfo`
+
+**请求方式**:`POST`
+
+**请求数据类型**:`application/json`
+
+**请求**:
+
+```javascript
+{
+  "roomIdFromCp": "" //来自cp的队伍ID,必传
+}
+```
+
+
+**响应**:
+
+```javascript
+{
+  "code": 200,//错误码, 200是成功，其他都为失败
+  "data": {
+    "memberList": [], //队伍成员列表
+    "roomIdFromCp": "", //来自cp的队伍ID
+    "roomLimit": 0, //队伍成员容量
+    "roomName": "", //队伍名称
+    "roomShowNum": "100123", //MGS队伍号
+    "roomState": 0, //队伍状态:0准备中,1游戏中,2游戏结束
+    "roomTags": ["大乱斗","5V5"], //队伍标签
+    "canVoice": true, // 是否使用开麦
+    "canRoomChat": true,// 是否使用聊天室
+    "parentIdFromCp": "123124", // 父房间ID(来自cp)
+    "voiceScope": 2, // 语音能力范围: 0无,1Room,2Team
+    "roomChatScope": 1, // 聊天室能力范围: 0无,1Room,2Team
+  },
+  "message": "" //错误描述
+}
+```
+
+## 查询队伍记录(可选,用于调试)
+**接口描述**:
+
+可以查询队伍的整个生命周期的所有记录，
+用来调试对比cp方和mgs这边的操作是否一致,可选,用来调试
+
+**接口地址**:`/api/cp/mgsCp/team/queryRecord`
+
+**请求方式**:`POST`
+
+**请求数据类型**:`application/json`
+
+**请求**:
+
+```javascript
+{
+  "roomIdFromCp": "", //来自cp的队伍ID,必传
+}
+``` 
+
+**响应**:
+
+```javascript
+{
+  "code": 200,
+          "message": "成功",
+          "data": [
+    {
+      "content": "[create Team] source(MGS SDK),name(太空),showNum(102546),limit(10),state(0)",
+      "time": "2021-03-26 15:29:29"
+    },
+    {
+      "content": "[join Team] openId(0e4360d19fc4e4a12969a0c10bb3d5cd)",
+      "time": "2021-03-26 15:29:29"
+    },
+    {
+      "content": "[syncInfo] name(太空:102546),state(0),",
+      "time": "2021-03-26 15:29:31"
+    },
+    {
+      "content": "[join Team] openId(0f5c191071b6d64c667aabd052867095)",
+      "time": "2021-03-26 15:29:43"
+    },
+    {
+      "content": "[join Team] openId(6b230940da1583627527087867097502)",
+      "time": "2021-03-26 15:29:44"
+    },
+    {
+      "content": "[join Team] openId(8a0d848328be304ceea14e729fbf6bcb)",
+      "time": "2021-03-26 15:31:13"
+    },
+    {
+      "content": "[join Team] openId(bcc6aae27091cb498d95906d34cd62bf)",
+      "time": "2021-03-26 15:31:14"
+    },
+    {
+      "content": "[join Team] openId(7f7c3e0c9cab785c0eafc183d997ee8a)",
+      "time": "2021-03-26 15:31:58"
+    },
+    {
+      "content": "[syncInfo] name(太空:102546),state(1),",
+      "time": "2021-03-26 15:32:19"
+    },
+    {
+      "content": "[destroy] source(CPServer)",
+      "time": "2021-03-26 15:33:26"
+    }
+  ]
+}
+```
+
+## 同步队伍成员（建议使用）
+
+**接口描述**:
+
+游戏方需要根据房间内成员同步给MGS,每次同步全员数据  
+因为在游戏开始时，为解决悬浮球和游戏内队伍成员不一致的情况，
+需要在通知成员joinTeam前，同步team成员到MGS。
+
+**接口地址**:`/api/cp/mgsCp/team/syncMember`
+
+**请求方式**:`POST`
+
+**请求数据类型**:`application/json`
+
+**请求**:
+
+```javascript
+{
+  "roomIdFromCp": "", //来自cp的队伍ID,必传
+  "openIdList": ["openId1","openId2","openId3"] //队伍成员
 }
 ``` 
 
