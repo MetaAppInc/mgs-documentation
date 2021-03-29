@@ -646,7 +646,7 @@ API接口:
 /**
  * 获取当前233环境
  * @param context
- * @return 返回整型, 取值范围(0: test环境 1：pre环境  2：线上环境)
+ * @return 返回整型, 取值范围(0:测试环境 1:预发环境  2:线上环境)
  */
 int getCurrentEnvironment(Context context);
 
@@ -658,7 +658,7 @@ int getCurrentEnvironment(Context context);
 
   
 int envCode = MgsApi.getInstance().getCurrentEnvironment(context);
- //返回值 取值  0: 测试环境 1：预发环境  2：线上环境
+ //返回值 取值  0:测试环境 1:预发环境  2:线上环境
  
 ```
 
