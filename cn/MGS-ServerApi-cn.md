@@ -41,7 +41,7 @@
 
 举例：
 
-SIGN 为请求参数的通过CP服务器端秘钥和请求参数一起进行签名运算得到的签名，每一次接口请求都会根据参数和APP对应的秘钥进行数据签名验证；
+SIGN 为请求参数的通过游戏方服务器端秘钥和请求参数一起进行签名运算得到的签名，每一次接口请求都会根据参数和APP对应的秘钥进行数据签名验证；
 
 假设传送的参数如下： {"id":"1298b012345678","name":"Recoba"}
 
@@ -112,7 +112,7 @@ sign=MD5(stringSignTemp).toUpperCase()="10F8FA8998F16521CA6F7BCF43823A67" //注�
 ```javascript
 {
   "openCode": "", //用户CODE,必传
-  "openId": ""  //开放用户ID,必传
+  "openId": ""  //用户ID,必传
 }
 ``` 
 
@@ -156,8 +156,8 @@ sign=MD5(stringSignTemp).toUpperCase()="10F8FA8998F16521CA6F7BCF43823A67" //注�
 ```javascript
 {
   "openCode": "", //用户CODE,必传
-  "openId": "",  //开放用户ID,必传
-  "friendOpenIdList": ["111","222"],  //好友的开放ID集合,必传
+  "openId": "",  //用户ID,必传
+  "friendOpenIdList": ["111","222"] //好友的用户ID集合,必传
   
 }
 ``` 
@@ -183,11 +183,9 @@ sign=MD5(stringSignTemp).toUpperCase()="10F8FA8998F16521CA6F7BCF43823A67" //注�
 | 销毁房间  | 游戏方房间若销毁了，需要同步给MGS进行房间销毁。|
 | 同步房间信息  | 同步房间信息,每次同步修改的内容 |
 | 移除房间成员  | 当用户掉线等需要删除异常用户的场景使用 |
-| 搜索房间(可选)  | 通过MGS房间号查询cp的房间号，同时MGS SDK也提供了相同能力的接口 |
+| 搜索房间(可选)  | 通过MGS房间号查询游戏方的房间号，同时MGS SDK也提供了相同能力的接口 |
 | 查询房间信息(用于调试)  | 查询房间信息,用来调试 |
-| 查询房间记录(用于调试) | 可以查询房间的整个生命周期的所有记录， 用来调试对比cp方和mgs这边的操作是否一致,用来调试 |
-| 同步房间成员（不建议使用）  | 游戏方需要根据房间内成员信息同步给MGS,每次同步全员数据 |
-
+| 查询房间记录(用于调试) | 可以查询房间的整个生命周期的所有记录， 用来调试对比游戏方和mgs这边的操作是否一致,用来调试 |
 
 ## 创建房间
 
@@ -205,7 +203,7 @@ sign=MD5(stringSignTemp).toUpperCase()="10F8FA8998F16521CA6F7BCF43823A67" //注�
 
 ```javascript
 {
-  "roomIdFromCp": "111dddd", //来自cp的房间ID,必传
+  "roomIdFromCp": "111dddd", //来自游戏方的房间ID,必传
   "roomLimit": 4, //房间成员容量,必传
   "roomName": "今天天气真好", //房间名称,必传
   "roomState":0, // 房间状态:0准备中,1游戏中,2游戏结束,必传
@@ -221,7 +219,7 @@ sign=MD5(stringSignTemp).toUpperCase()="10F8FA8998F16521CA6F7BCF43823A67" //注�
 {
 	"code": 200,//错误码, 200是成功，其他都为失败
 	"data": {
-		"roomIdFromCp": "111dddd", //来自cp的房间ID
+		"roomIdFromCp": "111dddd", //来自游戏方的房间ID
 		"roomLimit": 0, //房间成员容量
 		"roomName": "今天天气不错", //房间名称
         "roomShowNum": "100123", //MGS房间号
@@ -252,7 +250,7 @@ sign=MD5(stringSignTemp).toUpperCase()="10F8FA8998F16521CA6F7BCF43823A67" //注�
 
 ```javascript
 {
-  "roomIdFromCp": "" //来自cp的房间ID,必传
+  "roomIdFromCp": "" //来自游戏方的房间ID,必传
 }
 ``` 
 
@@ -283,10 +281,10 @@ sign=MD5(stringSignTemp).toUpperCase()="10F8FA8998F16521CA6F7BCF43823A67" //注�
 
 ```javascript
 {
-  "roomIdFromCp": "", //来自cp的房间ID,必传
-  "roomName": "", // 房间名称
-  "roomState": 0, //房间状态:0准备中,1游戏中,2游戏结束
-  "roomTags": ["大乱斗","5V5"] //房间标签，数组
+  "roomIdFromCp": "", //来自游戏方的房间ID,必传
+  "roomName": "", // 可选，房间名称
+  "roomState": 0, //可选，房间状态:0准备中,1游戏中,2游戏结束
+  "roomTags": ["大乱斗","5V5"] //可选，房间标签，数组
 }
 ```
 
@@ -317,7 +315,7 @@ sign=MD5(stringSignTemp).toUpperCase()="10F8FA8998F16521CA6F7BCF43823A67" //注�
 
 ```javascript
 {
-  "roomIdFromCp": "", //来自cp的房间ID,必传
+  "roomIdFromCp": "", //来自游戏方的房间ID,必传
   "openId": "2ffefdgdsfsdf" //被移除的成员,必传
 }
 ``` 
@@ -335,7 +333,7 @@ sign=MD5(stringSignTemp).toUpperCase()="10F8FA8998F16521CA6F7BCF43823A67" //注�
 ## 搜索房间(可选)
 **接口描述**:
 
-可选，通过MGS房间号查询cp的房间号  
+可选，通过MGS房间号查询游戏方的房间号  
 同时MGS SDK也提供了相同能力的接口
 
 **接口地址**:`/api/cp/mgsCp/room/search`
@@ -357,7 +355,7 @@ sign=MD5(stringSignTemp).toUpperCase()="10F8FA8998F16521CA6F7BCF43823A67" //注�
 ```javascript
 {
   "code": 200, //错误码, 200是成功，其他都为失败
-  "data": "13124124", //cp的房间号
+  "data": "13124124", //游戏方的房间号
   "message": ""  //错误描述
 }
 ```
@@ -378,7 +376,7 @@ sign=MD5(stringSignTemp).toUpperCase()="10F8FA8998F16521CA6F7BCF43823A67" //注�
 
 ```javascript
 {
-  "roomIdFromCp": "" //来自cp的房间ID,必传
+  "roomIdFromCp": "" //来自游戏方的房间ID,必传
 }
 ```
 
@@ -390,7 +388,7 @@ sign=MD5(stringSignTemp).toUpperCase()="10F8FA8998F16521CA6F7BCF43823A67" //注�
   "code": 200,//错误码, 200是成功，其他都为失败
   "data": {
     "memberList": [], //房间成员列表
-    "roomIdFromCp": "", //来自cp的房间ID
+    "roomIdFromCp": "", //来自游戏方的房间ID
     "roomLimit": 0, //房间成员容量
     "roomName": "", //房间名称
     "roomShowNum": "100123", //MGS房间号
@@ -407,7 +405,7 @@ sign=MD5(stringSignTemp).toUpperCase()="10F8FA8998F16521CA6F7BCF43823A67" //注�
 **接口描述**:
 
 可以查询房间的整个生命周期的所有记录，
-用来调试对比cp方和mgs这边的操作是否一致,可选,用来调试
+用来调试对比游戏方和mgs这边的操作是否一致,可选,用来调试
 
 **接口地址**:`/api/cp/mgsCp/room/queryRecord`
 
@@ -419,7 +417,7 @@ sign=MD5(stringSignTemp).toUpperCase()="10F8FA8998F16521CA6F7BCF43823A67" //注�
 
 ```javascript
 {
-  "roomIdFromCp": "", //来自cp的房间ID,必传
+  "roomIdFromCp": "", //来自游戏方的房间ID,必传
 }
 ``` 
 
@@ -474,40 +472,6 @@ sign=MD5(stringSignTemp).toUpperCase()="10F8FA8998F16521CA6F7BCF43823A67" //注�
 }
 ```
 
-## 同步房间成员（不建议使用）
-
-**接口描述**:
-
-可选，游戏方需要根据房间内成员信息同步给MGS,每次同步全员数据  
-但是在实际情况中，此接口会造成MGS和游戏成员不一致，所以不建议使用  
-可以通过配合MGS SDK的joinRoom、leaveRoom，以及MGS服务器的removeMember等操作完成业务闭环
-
-**接口地址**:`/api/cp/mgsCp/room/syncMember`
-
-**请求方式**:`POST`
-
-**请求数据类型**:`application/json`
-
-**请求**:
-
-```javascript
-{
-  "roomIdFromCp": "", //来自cp的房间ID,必传
-  "openIdList": ["openId1","openId2","openId3"] //房间成员
-}
-``` 
-
-**响应**:
-
-```javascript
-{
-  "code": 200, //错误码, 200是成功，其他都为失败
-  "data": true, //成功返回true，失败返回false
-  "message": ""  //错误描述
-}
-```
-
-
 
 # 队伍接口--游戏服务器专用(选用)
 
@@ -519,7 +483,7 @@ sign=MD5(stringSignTemp).toUpperCase()="10F8FA8998F16521CA6F7BCF43823A67" //注�
 | 同步队伍成员（必须使用）  | 游戏方需要根据队伍内成员信息同步给MGS,每次同步全员数据 |
 | 移除队伍成员  | 当用户掉线等需要删除异常用户的场景使用 |
 | 查询队伍信息(用于调试)  | 查询队伍信息,用来调试 |
-| 查询队伍记录(用于调试) | 可以查询队伍的整个生命周期的所有记录， 用来调试对比cp方和mgs这边的操作是否一致,用来调试 |
+| 查询队伍记录(用于调试) | 可以查询队伍的整个生命周期的所有记录， 用来调试对比游戏方和mgs这边的操作是否一致,用来调试 |
 
 
 ## 创建队伍
@@ -538,14 +502,14 @@ sign=MD5(stringSignTemp).toUpperCase()="10F8FA8998F16521CA6F7BCF43823A67" //注�
 
 ```javascript
 {
-  "roomIdFromCp": "111dddd", //来自cp的队伍ID,必传
+  "roomIdFromCp": "111dddd", //来自游戏的队伍ID,必传
   "roomLimit": 4, //队伍成员容量,必传
   "roomName": "今天天气真好", //队伍名称,必传
   "roomState":0, // 队伍状态:0准备中,1游戏中,2游戏结束,必传
   "roomTags": ["大乱斗","5V5"] //队伍标签,没有则不传,选传
   "canVoice": true, // 是否使用开麦,默认开启,选传
   "canRoomChat": true, // 是否使用聊天室,默认开启,选传
-  "parentIdFromCp": "123124", // 父房间ID(来自cp)
+  "parentIdFromCp": "123124", // 父房间ID(来自游戏方)
   "voiceScope": 2, // 语音能力范围: 0无,1Room,2Team
   "roomChatScope": 1, // 聊天室能力范围: 0无,1Room,2Team
 }
@@ -557,7 +521,7 @@ sign=MD5(stringSignTemp).toUpperCase()="10F8FA8998F16521CA6F7BCF43823A67" //注�
 {
 	"code": 200,//错误码, 200是成功，其他都为失败
 	"data": {
-		"roomIdFromCp": "111dddd", //来自cp的房间ID
+		"roomIdFromCp": "111dddd", //来自游戏方的房间ID
 		"roomLimit": 0, //房间成员容量
 		"roomName": "今天天气不错", //房间名称
         "roomShowNum": "100123", //MGS房间号
@@ -566,7 +530,7 @@ sign=MD5(stringSignTemp).toUpperCase()="10F8FA8998F16521CA6F7BCF43823A67" //注�
         "canVoice": true, // 是否使用开麦
         "canRoomChat": true, // 是否使用聊天室
         "memberList": [], //房间成员列表
-        "parentIdFromCp": "123124", // 父房间ID(来自cp)
+        "parentIdFromCp": "123124", // 父房间ID(来自游戏方)
         "voiceScope": 2, // 语音能力范围: 0无,1Room,2Team
         "roomChatScope": 1, // 聊天室能力范围: 0无,1Room,2Team
     },
@@ -591,7 +555,7 @@ sign=MD5(stringSignTemp).toUpperCase()="10F8FA8998F16521CA6F7BCF43823A67" //注�
 
 ```javascript
 {
-  "roomIdFromCp": "" //来自cp的队伍ID,必传
+  "roomIdFromCp": "" //来自游戏方的队伍ID,必传
 }
 ``` 
 
@@ -622,10 +586,10 @@ sign=MD5(stringSignTemp).toUpperCase()="10F8FA8998F16521CA6F7BCF43823A67" //注�
 
 ```javascript
 {
-  "roomIdFromCp": "", //来自cp的队伍ID,必传
-  "roomName": "", // 队伍名称
-  "roomState": 0, //队伍状态:0准备中,1游戏中,2游戏结束
-  "roomTags": ["大乱斗","5V5"] //队伍标签，数组
+  "roomIdFromCp": "", //来自游戏方的队伍ID,必传
+  "roomName": "", // 可选,队伍名称
+  "roomState": 0, //可选,队伍状态:0准备中,1游戏中,2游戏结束
+  "roomTags": ["大乱斗","5V5"] //可选,队伍标签，数组
 }
 ```
 
@@ -656,7 +620,7 @@ sign=MD5(stringSignTemp).toUpperCase()="10F8FA8998F16521CA6F7BCF43823A67" //注�
 
 ```javascript
 {
-  "roomIdFromCp": "", //来自cp的队伍ID,必传
+  "roomIdFromCp": "", //来自游戏方的队伍ID,必传
   "openId": "2ffefdgdsfsdf" //被移除的成员,必传
 }
 ``` 
@@ -688,7 +652,7 @@ sign=MD5(stringSignTemp).toUpperCase()="10F8FA8998F16521CA6F7BCF43823A67" //注�
 
 ```javascript
 {
-  "roomIdFromCp": "" //来自cp的队伍ID,必传
+  "roomIdFromCp": "" //来自游戏方的队伍ID,必传
 }
 ```
 
@@ -700,7 +664,7 @@ sign=MD5(stringSignTemp).toUpperCase()="10F8FA8998F16521CA6F7BCF43823A67" //注�
   "code": 200,//错误码, 200是成功，其他都为失败
   "data": {
     "memberList": [], //队伍成员列表
-    "roomIdFromCp": "", //来自cp的队伍ID
+    "roomIdFromCp": "", //来自游戏方的队伍ID
     "roomLimit": 0, //队伍成员容量
     "roomName": "", //队伍名称
     "roomShowNum": "100123", //MGS队伍号
@@ -708,7 +672,7 @@ sign=MD5(stringSignTemp).toUpperCase()="10F8FA8998F16521CA6F7BCF43823A67" //注�
     "roomTags": ["大乱斗","5V5"], //队伍标签
     "canVoice": true, // 是否使用开麦
     "canRoomChat": true,// 是否使用聊天室
-    "parentIdFromCp": "123124", // 父房间ID(来自cp)
+    "parentIdFromCp": "123124", // 父房间ID(来自游戏方)
     "voiceScope": 2, // 语音能力范围: 0无,1Room,2Team
     "roomChatScope": 1, // 聊天室能力范围: 0无,1Room,2Team
   },
@@ -720,7 +684,7 @@ sign=MD5(stringSignTemp).toUpperCase()="10F8FA8998F16521CA6F7BCF43823A67" //注�
 **接口描述**:
 
 可以查询队伍的整个生命周期的所有记录，
-用来调试对比cp方和mgs这边的操作是否一致,可选,用来调试
+用来调试对比游戏方和mgs这边的操作是否一致,可选,用来调试
 
 **接口地址**:`/api/cp/mgsCp/team/queryRecord`
 
@@ -732,7 +696,7 @@ sign=MD5(stringSignTemp).toUpperCase()="10F8FA8998F16521CA6F7BCF43823A67" //注�
 
 ```javascript
 {
-  "roomIdFromCp": "", //来自cp的队伍ID,必传
+  "roomIdFromCp": "", //来自游戏方的队伍ID,必传
 }
 ``` 
 
@@ -791,7 +755,7 @@ sign=MD5(stringSignTemp).toUpperCase()="10F8FA8998F16521CA6F7BCF43823A67" //注�
 
 **接口描述**:
 
-游戏方需要根据房间内成员同步给MGS,每次同步全员数据  
+游戏方需要根据队伍内成员同步给MGS,每次同步全员数据  
 因为在游戏开始时，为解决悬浮球和游戏内队伍成员不一致的情况，
 需要在通知成员joinTeam前，同步team成员到MGS。
 
@@ -805,7 +769,7 @@ sign=MD5(stringSignTemp).toUpperCase()="10F8FA8998F16521CA6F7BCF43823A67" //注�
 
 ```javascript
 {
-  "roomIdFromCp": "", //来自cp的队伍ID,必传
+  "roomIdFromCp": "", //来自游戏方的队伍ID,必传
   "openIdList": ["openId1","openId2","openId3"] //队伍成员
 }
 ``` 
