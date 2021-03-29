@@ -62,7 +62,7 @@ sign=MD5(stringSignTemp).toUpperCase()="10F8FA8998F16521CA6F7BCF43823A67" //注�
 请参考服务端DEMO(`src/main/java/com/mgs/cloud/game/server/utils/SignUtil.java`)
 
 
-# 开放用户接口--游戏服务器专用
+# 用户接口--游戏服务器专用
 
 |  接口   | 描述 |
 |  ----  | ----  |
@@ -106,6 +106,50 @@ sign=MD5(stringSignTemp).toUpperCase()="10F8FA8998F16521CA6F7BCF43823A67" //注�
 }
 ```
 
+# 好友接口--游戏服务器专用
+
+|  接口   | 描述 |
+|  ----  | ----  |
+| 是否是好友  | 用于验证用户之间的好友关系 |
+
+## 是否是好友
+
+**接口描述**:
+
+用于验证用户之间的好友关系,支持批量，最多支持50个用户同时验证
+
+**接口地址**:`/api/cp/mgsCp/friend/isFriendByBatch`
+
+
+**请求方式**:`POST`
+
+
+**请求数据类型**:`application/json`
+
+
+**请求参数**:
+
+```javascript
+{
+  "openCode": "", //用户CODE,必传
+  "openId": "",  //开放用户ID,必传
+  "friendOpenIdList": ["111","222"],  //好友的开放ID集合,必传
+  
+}
+``` 
+
+
+**响应**:
+```javascript
+{
+	"code": 200, //错误码, 200是成功，其他都为失败
+	"data": {
+            "111": true,
+            "222": false
+        },
+	"message": ""  //错误描述
+}
+```
 
 # 房间接口--游戏服务器专用
 
