@@ -108,8 +108,7 @@ feature接口列表描述:
 `showUserProfile` 查看玩家资料信息   
 `isFriendShip` 检测玩家是否好友关系   
 `showFloatingLayer` 显示悬浮层(聊天:0 / 好友:1)   
-`getCpRoomIdByRoomShowNum` 根据233房间号查找游戏方的房间号   
-`getCurrentEnv` 获取当前233环境  
+`getCpRoomIdByRoomShowNum` 根据233房间号查找游戏方的房间号    
 
 
 **登录-示例**
@@ -633,39 +632,34 @@ MgsApi.getInstance().invokeFeature("showExitGameDialog", 0, null, null);
 
 无
 
+ 
+## 获取当前233乐园环境
 
-**获取当前233乐园环境-示例**
+游戏方在调试过程中可能需要检测233乐园版本环境，可通过`getCurrentEnvironment`进行检测。
+可在初始化之前进行调用。
 
-游戏方在调试过程中可能需要检测233乐园版本环境，可通过`getCurrentEnv`进行检测。
+
+API接口:
+
+```java
+
+/**
+ * 获取当前233环境
+ * @param context
+ * @return 返回整型, 取值范围(0: test环境 1：pre环境  2：线上环境)
+ */
+int getCurrentEnvironment(Context context);
+
+```
 
 `调用示例`
 
 ```java
+
   
-//调用玩家是否是好友关系
-MgsApi.getInstance().invokeFeature("getCurrentEnv", 0, null, new MgsFeatureListener() {
-            @Override
-            public void onSuccess(int requestCode, String result) {
-              // result = {"envCode" : 0} 取值  0: test环境 1：pre环境  2：线上环境
-            }
-
-            @Override
-            public void onFail(int requestCode, int code, String message) {
-                //获取失败
-            }
-        );
-``` 
-
-`请求参数`
-
-无
-
-`返回值`
-
-```java
- {
-  "envCode" : 0 //取值:  0: test环境 1：pre环境  2：线上环境
-} 
+int envCode = MgsApi.getInstance().getCurrentEnvironment(context);
+ //返回值 取值  0: 测试环境 1：预发环境  2：线上环境
+ 
 ```
 
 ## 日志上报
