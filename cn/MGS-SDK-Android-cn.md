@@ -86,7 +86,7 @@ API接口：
 
 /**
  * 动态功能接口
- * @param feature 接口名称 ("login","queryPlayerAction","createRoom",etc.)
+ * @param feature 接口名称 ("login","queryPlayerAction",etc.)
  * @param requestCode 请求码,游戏可根据业务特征来就进行区分是哪次请求,默认可传0
  * @param jsonParams  json格式参数
  * @param listener   回调监听
@@ -234,7 +234,7 @@ MgsApi.getInstance().invokeFeature("queryPlayerAction", requestCode, null, new M
 
 **创建房间-示例**
 
-游戏方创建好房间后可通过调用`createAndJoinRoom`或`createRoom`进行数据同步，也可通过MGS服务端进行数据同步。
+游戏方创建好房间后可通过调用`createAndJoinRoom`进行数据同步，也可通过MGS服务端进行数据同步。
 
 `调用示例`
 
@@ -251,7 +251,6 @@ MgsApi.getInstance().invokeFeature("createAndJoinRoom", requestCode, params, new
             public void onSuccess(int requestCode, String resultJson) {
               //创建房间成功
               //resultJson = {"parentRoomIdFromCp":null,"roomIdFromCp":"游戏方房间号","roomLimit":8,"roomName":"房间名","roomShowNum":"103216","roomState":0,"roomTags":null}
-
             }
 
             @Override
@@ -281,7 +280,7 @@ MgsApi.getInstance().invokeFeature("createAndJoinRoom", requestCode, params, new
   "roomLimit":2, //游戏方房间容量
   "roomName":"房间名称", //房间名称
   "roomState":0,  //房间状态，取值 - 0: 可加入 1: 正在玩 (不可加入) 2: 游戏结束
-  "roomShowNum": "100038",// 房间显示号 
+  "roomShowNum": "100038",// MGS房间号
   "parentRoomIdFromCp":null, //组队模式会返回该ID
   "roomTags":null //房间标签，返回的是数组["标签1","标签2"]
 } 
@@ -332,7 +331,7 @@ MgsApi.getInstance().invokeFeature("joinRoom", requestCode, params, new MgsFeatu
   "roomLimit":2, //游戏方房间容量
   "roomName":"房间名称", //房间名称
   "roomState":0,  //房间状态，取值 - 0: 可加入 1: 正在玩 (不可加入) 2: 游戏结束
-  "roomShowNum": "100038",// 房间显示号 
+  "roomShowNum": "100038",// MGS房间号 
   "parentRoomIdFromCp":null, //组队模式会返回该ID
   "roomTags":null //房间标签，返回的是数组["标签1","标签2"]
 } 
@@ -340,7 +339,7 @@ MgsApi.getInstance().invokeFeature("joinRoom", requestCode, params, new MgsFeatu
 
 **离开房间-示例**
 
-游戏方在玩家加入离开房间，需要调用`leaveRoom`进行数据同步。
+游戏方在玩家离开房间前，需要调用`leaveRoom`进行数据同步。
 
 `调用示例`
 
@@ -424,7 +423,7 @@ MgsApi.getInstance().invokeFeature("joinTeam", requestCode, params, new MgsFeatu
   "roomLimit":2, //游戏方房间容量
   "roomName":"房间名称", //房间名称
   "roomState":0,  //房间状态，取值 - 0: 可加入 1: 正在玩 (不可加入) 2: 游戏结束
-  "roomShowNum": "100038",// 房间显示号 
+  "roomShowNum": "100038",// MGS房间号 
   "parentRoomIdFromCp":"1233", //组队模式会返回该ID
   "roomTags":null //房间标签，返回的是数组["标签1","标签2"]
 } 
