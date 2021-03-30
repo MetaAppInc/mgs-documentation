@@ -22,4 +22,4 @@
 ![](https://cdn.233xyx.com/1617108108842_952.png)
 
 ## 如何联系我们
-联系方 | 式：yanming.hao@appshahe.com
+联系方式：yanming.hao@appshahe.com
