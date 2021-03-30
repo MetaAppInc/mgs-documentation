@@ -3,7 +3,7 @@
 ## Access Address
 
 Pre-Online environment : http://pre-cpapi.mgsapi.net  
-Online environment : http://cpapi.mgsapi.net
+Online environment : https://cpapi.mgsapi.net
 
 ## Public request header
 
