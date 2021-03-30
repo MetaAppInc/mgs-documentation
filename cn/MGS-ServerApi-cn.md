@@ -2,7 +2,7 @@
 
 ## 访问地址
 预发环境 : http://pre-cpapi.mgsapi.net  
-线上环境 : http://cpapi.mgsapi.net
+线上环境 : https://cpapi.mgsapi.net
 
 ## 公共请求头
 
