@@ -86,7 +86,7 @@ API接口：
 
 /**
  * 动态功能接口
- * @param feature 接口名称 ("login","queryPlayerAction","createRoom",etc.)
+ * @param feature 接口名称 ("login","queryPlayerAction",etc.)
  * @param requestCode 请求码,游戏可根据业务特征来就进行区分是哪次请求,默认可传0
  * @param jsonParams  json格式参数
  * @param listener   回调监听
@@ -97,14 +97,18 @@ void invokeFeature(String feature, int requestCode, String jsonParams, MgsFeatur
 
 feature接口列表描述:
 
-`login` 登录  
-`queryPlayerAction` 查询玩家操作方式  
-`createRoom` 创建房间  
-`joinRoom` 加入房间  
-`leaveRoom` 离开房间  
-`showUserProfile` 查看玩家资料信息  
-`isFriendShip` 检测玩家是否好友关系  
-`showFloatingLayer` 显示悬浮层(聊天:0 / 好友:1)
+`login` 登录   
+`queryPlayerAction` 查询玩家操作方式   
+`createAndJoinRoom` 创建并加入房间   
+`joinRoom` 加入房间    
+`leaveRoom` 离开房间   
+`joinTeam` 加入队伍   
+`leaveTeam` 离开队伍   
+`addFriend` 添加好友  
+`showUserProfile` 查看玩家资料信息   
+`isFriendShip` 检测玩家是否好友关系   
+`showFloatingLayer` 显示悬浮层(聊天:0 / 好友:1)   
+`getCpRoomIdByRoomShowNum` 根据233房间号查找游戏方的房间号    
 
 
 **登录-示例**
@@ -123,7 +127,7 @@ MgsApi.getInstance().invokeFeature("login", requestCode, null, new MgsFeatureLis
     @Override
     public void onSuccess(int requestCode, String resultJson) {
 
-        //resultJson = {"openCode":"e1c575ca8a7732711e7a8c2f8b9f07dd","openId":"52767f66607dcea8558de6bccd7a270d"}
+        //resultJson = {"openId":"玩家openId","openCode":"玩家openCode","avatar":"头像地址","nickname":"昵称"}
        
        if (requestCode == 1000) {
            //json格式转换,这里使用Gson进行转换，游戏可能就自身需求使用不同的转换工具进行转换
@@ -134,9 +138,13 @@ MgsApi.getInstance().invokeFeature("login", requestCode, null, new MgsFeatureLis
           String openId = result.get("openId");
           //玩家openCode
           String openCode = result.get("openCode");
+          //玩家头像
+          String avatar = result.get("avatar");
+          //玩家昵称
+          String nickname = result.get("nickname");
 
-          //通知游戏服务端登录结果
-          requestLoginResultToServer(openId, code);
+          //上报登录结果给游戏服务端
+          requestLoginResultToServer(openId, openCode, nickname, avatar);
        } 
     }
 
@@ -155,9 +163,11 @@ MgsApi.getInstance().invokeFeature("login", requestCode, null, new MgsFeatureLis
 
 ```java
 {
-  "openId":"52767f666072cea8553de6bccd7a270d", //玩家openId, 用于唯一标识
-  "openCode":"e1c575ca8a7732711e7a8c2f8b9f07dd" //玩家openCode,用户有效性验证
-}
+  "openId":"52767f666072cea8553de6bccd7a270d", //玩家openId, 用于唯一标识   
+  "openCode":"e1c575ca8a7732711e7a8c2f8b9f07dd", //玩家openCode,用户有效性验证   
+  "avatar":"玩家头像", //233玩家头像   
+  "nickname":"玩家昵称" //233玩家昵称  
+}  
        
 ```
 
@@ -193,10 +203,11 @@ int requestCode = 0;
 MgsApi.getInstance().invokeFeature("queryPlayerAction", requestCode, null, new MgsFeatureListener() {
     @Override
     public void onSuccess(int requestCode, String resultJson) {
-       // resultJson = {"roomIdFromCp":"158","action":0,"mgsCpRead":false}
-       // action 玩家在233大厅选择进入房间时的操作方式,取值 0: 加入房间 1: 创建房间  2: 快速加入房间
-      // roomIdFromCp 游戏同步给MGS的roomId,加入房间会有该值，其他action不会有
+       // resultJson = {"action":0,"mgsCpRead":false, "roomIdFromCp":"716","inviteOpenId":"123"}
+       // action 玩家在233大厅选择进入房间时的操作方式,取值 -1:无任何操作 0: 加入房间 1: 创建房间  2: 快速加入房间
+      // roomIdFromCp 游戏方的roomId,加入房间会有该值，其他action不会有
       // mgsCpRead 首次查询返回false，若退到后台再返回重新查询玩家操作，会返回true
+      //inviteOpenId 邀请人的openId
     }
 
     @Override
@@ -214,15 +225,16 @@ MgsApi.getInstance().invokeFeature("queryPlayerAction", requestCode, null, new M
 
 ```java
 { 
-"action":0,  //玩家在233大厅选择进入房间时的操作方式,取值 0: 加入房间 1: 创建房间  2: 快速加入房间
+"action":0,  //玩家在233大厅选择进入房间时的操作方式,取值 -1:无任何操作 0: 加入房间 1: 创建房间  2: 快速加入房间
 "roomIdFromCp": "123456", //游戏方房间号
-"mgsCpRead":false //首次会返回false，若退到后台再返回重新查询玩家操作，会返回true，游戏根据业务进行处理。
+"mgsCpRead":false, //首次会返回false，若退到后台再返回重新查询玩家操作，会返回true，游戏根据业务进行处理。
+"inviteOpenId":"123" //邀请人的openId
 } 
 ```
 
 **创建房间-示例**
 
-游戏方创建好房间后可通过调用`createRoom`进行数据同步，也可通过MGS服务端进行数据同步。
+游戏方创建好房间后可通过调用`createAndJoinRoom`进行数据同步，也可通过MGS服务端进行数据同步。
 
 `调用示例`
 
@@ -234,12 +246,11 @@ String params = "{\"roomIdFromCp\":\"1234\",\"roomName\":\"测试房\",\"roomLim
 //请求码,游戏可根据业务特征来就进行区分是哪次请求,默认可传0
 int requestCode = 0;
 //创建房间
-MgsApi.getInstance().invokeFeature("createRoom", requestCode, params, new MgsFeatureListener() {
+MgsApi.getInstance().invokeFeature("createAndJoinRoom", requestCode, params, new MgsFeatureListener() {
             @Override
             public void onSuccess(int requestCode, String resultJson) {
               //创建房间成功
-              //resultJson = {"roomIdFromCp":"1234","roomLimit":2,"roomName":"房间名称", "roomState":0, "roomShowNum": "100038"} 
-
+              //resultJson = {"parentRoomIdFromCp":null,"roomIdFromCp":"游戏方房间号","roomLimit":8,"roomName":"房间名","roomShowNum":"103216","roomState":0,"roomTags":null}
             }
 
             @Override
@@ -269,7 +280,9 @@ MgsApi.getInstance().invokeFeature("createRoom", requestCode, params, new MgsFea
   "roomLimit":2, //游戏方房间容量
   "roomName":"房间名称", //房间名称
   "roomState":0,  //房间状态，取值 - 0: 可加入 1: 正在玩 (不可加入) 2: 游戏结束
-  "roomShowNum": "100038"// 房间显示号
+  "roomShowNum": "100038",// MGS房间号
+  "parentRoomIdFromCp":null, //组队模式会返回该ID
+  "roomTags":null //房间标签，返回的是数组["标签1","标签2"]
 } 
 ```
 
@@ -291,7 +304,7 @@ MgsApi.getInstance().invokeFeature("joinRoom", requestCode, params, new MgsFeatu
             @Override
             public void onSuccess(int requestCode, String resultJson) {
                 //加入房间成功回调
-                 // resultJson = {"roomIdFromCp":"1234","roomLimit":2,"roomName":"房间名称", "roomState":0, "roomShowNum": "100038"} 
+                 // resultJson =  {"parentRoomIdFromCp":null,"roomIdFromCp":"游戏方房间号","roomLimit":8,"roomName":"房间名","roomShowNum":"103216","roomState":0,"roomTags":null}
             }
 
             @Override
@@ -317,14 +330,16 @@ MgsApi.getInstance().invokeFeature("joinRoom", requestCode, params, new MgsFeatu
   "roomIdFromCp":"1234", //游戏方房间号
   "roomLimit":2, //游戏方房间容量
   "roomName":"房间名称", //房间名称
-  "roomState":0,  //房间状态，取值（0: 可加入 1: 正在玩 2: 已销毁）
-  "roomShowNum": "100038"// 房间显示号
+  "roomState":0,  //房间状态，取值 - 0: 可加入 1: 正在玩 (不可加入) 2: 游戏结束
+  "roomShowNum": "100038",// MGS房间号 
+  "parentRoomIdFromCp":null, //组队模式会返回该ID
+  "roomTags":null //房间标签，返回的是数组["标签1","标签2"]
 } 
 ```
 
 **离开房间-示例**
 
-游戏方在玩家加入离开房间，需要调用`leaveRoom`进行数据同步。
+游戏方在玩家离开房间前，需要调用`leaveRoom`进行数据同步。
 
 `调用示例`
 
@@ -337,7 +352,7 @@ MgsApi.getInstance().invokeFeature("leaveRoom", requestCode, params, new MgsFeat
             @Override
             public void onSuccess(int requestCode, String resultJson) {
                 //离开房间成功回调
-                //resultJson = {"data": true}
+                //resultJson = "true"
             }
 
             @Override
@@ -358,11 +373,100 @@ MgsApi.getInstance().invokeFeature("leaveRoom", requestCode, params, new MgsFeat
 
 `返回值`
 
+返回boolean类型字符串，需要进行转换 , `true`为离开成功，`false`为离开失败
+  
+
+
+**加入队伍-示例**
+
+游戏方在玩家加入某个队伍后，需要通过调用`joinTeam`进行数据同步。
+
+
+`调用示例`
+
+```java
+ 
+ //请求参数
+String params = "{\"roomIdFromCp\":\"1234\", \"backRoomIdFromCp\":\"1233\"}";
+//请求码,游戏可根据业务特征来就进行区分是哪次请求,默认可传0
+int requestCode = 0;
+//加入team
+MgsApi.getInstance().invokeFeature("joinTeam", requestCode, params, new MgsFeatureListener() {
+            @Override
+            public void onSuccess(int requestCode, String resultJson) {
+                //加入team成功回调
+                 // resultJson = {"parentRoomIdFromCp":"720","roomIdFromCp":"721","roomLimit":2,"roomName":"妄赎vo0","roomShowNum":"103218","roomState":1,"roomTags":null}
+            }
+
+            @Override
+            public void onFail(int requestCode, int code, String message) {
+                //失败回调
+            }
+        });
+```
+
+`请求参数`
+
 ```java
 {
-  "data": true, //离开房间状态，true 成功  fase:失败 
+  "roomIdFromCp":"1234"  //游戏方队伍ID
+  "backRoomIdFromCp":"1233" //游戏方的RoomId（离开team要返回到哪个Room，如果为null，则默认返回父ROOM的ID）
 }
 ```
+
+
+`返回值`
+
+```java
+{
+  "roomIdFromCp":"1234", //游戏方房间号
+  "roomLimit":2, //游戏方房间容量
+  "roomName":"房间名称", //房间名称
+  "roomState":0,  //房间状态，取值 - 0: 可加入 1: 正在玩 (不可加入) 2: 游戏结束
+  "roomShowNum": "100038",// MGS房间号 
+  "parentRoomIdFromCp":"1233", //组队模式会返回该ID
+  "roomTags":null //房间标签，返回的是数组["标签1","标签2"]
+} 
+```
+
+
+**离开队伍-示例**
+
+游戏方在玩家离开队伍，需要调用`leaveTeam`进行数据同步。
+
+`调用示例`
+
+```java
+String params = "{\"roomIdFromCp\":\"1234\"}";
+//请求码,游戏可根据业务特征来就进行区分是哪次请求,默认可传0
+int requestCode = 0;
+//离开队伍
+MgsApi.getInstance().invokeFeature("leaveTeam", requestCode, params, new MgsFeatureListener() {
+            @Override
+            public void onSuccess(int requestCode, String resultJson) {
+                //离开房间成功回调
+                //resultJson = "true"
+            }
+
+            @Override
+            public void onFail(int requestCode, int code, String message) {
+                //失败回调
+            }
+        });
+``` 
+
+`请求参数`
+
+```java
+{
+  "roomIdFromCp":"1234"  //游戏方房间号
+}
+```
+
+
+`返回值`
+
+返回boolean类型字符串，需要进行转换 , `true`为离开成功，`false`为离开失败
 
 
 **查看玩家资料卡片-示例**
@@ -410,7 +514,7 @@ int requestCode = 0;
 MgsApi.getInstance().invokeFeature("isFriendShip", requestCode, params, new MgsFeatureListener() {
             @Override
             public void onSuccess(int requestCode, String resultJson) {
-                //成功回调
+                //成功回调 resultJson = "true"
             }
 
             @Override
@@ -429,13 +533,52 @@ MgsApi.getInstance().invokeFeature("isFriendShip", requestCode, params, new MgsF
 ```
 
 
-`返回值`
+`返回值`  
+
+返回boolean类型字符串，需要进行转换 , `true`为是好友，`false`为不是好友
+
+
+**添加好友-示例**
+
+若需要添加233好友，可通过调用`addFriend`接口进行添加好友。
+
+`调用示例`
+
+```java
+
+//请求参数
+String params = "{\"friendOpenId\":\"1234\"}";
+
+//请求码,游戏可根据业务特征来就进行区分是哪次请求,默认可传0
+int requestCode = 0;
+//调用玩家是否是好友关系
+MgsApi.getInstance().invokeFeature("addFriend", requestCode, params, new MgsFeatureListener() {
+            @Override
+            public void onSuccess(int requestCode, String resultJson) {
+                //成功回调 resultJson = "true"
+            }
+
+            @Override
+            public void onFail(int requestCode, int code, String message) {
+                //失败回调
+            }
+        });
+``` 
+
+`请求参数`
 
 ```java
 {
-  "data": true, //是否好友关系，true: 是好友  fase: 不是好友
+  "friendOpenId":"12322323234"  //要添加的玩家openId
 }
 ```
+
+
+`返回值`  
+
+返回boolean类型字符串，需要进行转换 , `true`为成功，`false`为失败
+
+
 
 **显示悬浮窗-示例**
 
@@ -466,6 +609,7 @@ MgsApi.getInstance().invokeFeature("showFloatingLayer", requestCode, params, nul
 `返回值`
 
 无
+  
 
 **显示游戏退出确认框-示例**
 
@@ -487,6 +631,35 @@ MgsApi.getInstance().invokeFeature("showExitGameDialog", 0, null, null);
 
 无
 
+ 
+## 获取当前233乐园环境
+
+游戏方在调试过程中可能需要检测233乐园版本环境，可通过`getCurrentEnvironment`进行检测。
+可在初始化之前进行调用。
+
+
+API接口:
+
+```java
+
+/**
+ * 获取当前233环境
+ * @param context
+ * @return 返回整型, 取值范围(0:测试环境 1:预发环境  2:线上环境)
+ */
+int getCurrentEnvironment(Context context);
+
+```
+
+`调用示例`
+
+```java
+
+  
+int envCode = MgsApi.getInstance().getCurrentEnvironment(context);
+ //返回值 取值  0:测试环境 1:预发环境  2:线上环境
+ 
+```
 
 ## 日志上报
 
@@ -565,7 +738,7 @@ MgsApi.getInstance().registerMgsEventListener("exitGameEvent", new MgsEventListe
 });
 ``` 
 
-`修改房间名称`:
+`修改房间名称`: `废弃`
 
 ```java
 
@@ -574,6 +747,19 @@ MgsApi.getInstance().registerMgsEventListener("changeRoomNameEvent", new MgsEven
     public void onMgsEventHandle(String jsonData) {
         //resultJson = {"roomIdFromCp":"1121","roomName":"修改后的昵称"}
         //同步到游戏服务器
+    }
+});
+``` 
+
+
+`MGS房间销毁通知`:  
+
+```java
+
+MgsApi.getInstance().registerMgsEventListener("destroyRoomEvent", new MgsEventListener() {
+    @Override
+    public void onMgsEventHandle(String jsonData) {
+        //处理房间销毁的操作
     }
 });
 ``` 
