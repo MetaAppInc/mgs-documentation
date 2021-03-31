@@ -2,7 +2,7 @@
 
 ## Access Method
 
-`android studio`
+`android studio`  
 
 1. Download the SDK and add the provided package `mgs.aar` to the libs directory of the project.
 2. Add `aar` dependency to `build.gradle` of your project.
@@ -72,7 +72,7 @@ Code error:
   `10200`: Service connection failed  
   `400`: Parameter error  
   `500`: System abnormal, please try again later or contact customer service personnel  
-  `401`: Authentication error
+  `401`: Authentication error   
 
 - Room related:  
   `80001`: Room does not exist  
@@ -130,6 +130,10 @@ MgsApi.getInstance().invokeFeature("login", requestCode, null, new MgsFeatureLis
           String openId = result.get("openId");
           //player openCode
           String openCode = result.get("openCode");
+          //player avatar
+          String avatar = result.get("avatar");
+          //plauyer nickname
+          String nickname = result.get("nickname");
 
           //Notify the Game Server of login results
           requestLoginResultToServer(openId, code);
@@ -143,9 +147,9 @@ MgsApi.getInstance().invokeFeature("login", requestCode, null, new MgsFeatureLis
 }); 
 ```
 
-`Request parameters`
+`Request parameters`  
 
-None
+None  
 
 `Return value`
 
@@ -153,11 +157,30 @@ None
 {
   "openId":"52767f666072cea8553de6bccd7a270d", //player openId, used for unique identification
   "openCode":"e1c575ca8a7732711e7a8c2f8b9f07dd" //player openCode, User Validation
+  "avatar":"player avatar", //233 player avatar   
+  "nickname":"player nickname" //233 player nickname  
 }
        
 ```
 
-**Queries player's actions when entering a room - Example**
+**Queries if the interface is available**
+
+SDK provides interface for `isSupportedFeature`  and it can be used to check if the interface is available to use.
+
+```
+Call example
+boolean isSupported = MgsApi.getInstance().isSupportedFeature("login");
+
+if(isSupported) {
+  //interface is available for use
+} else {
+  //interface is not available for use
+}
+```
+
+
+
+**Queries player's actions when entering a room - Example**  
 
 Game side can call the interface when the player enters the game at the appropriate time, query the actions when the player enters the game, game side can carry out the corresponding business logic processing according to the operation.
 
@@ -182,20 +205,22 @@ MgsApi.getInstance().invokeFeature("queryPlayerAction", requestCode, null, new M
 });
 ```
 
-`Request parameters`
+`Request parameters`  
 
-None
+None  
 
 `Return value`
 
 ```java
 { 
-"action":0,  //The player's action when entering a room, which is 0: join room 1: create room 2: quick join room
+"action":0,  //The player's action when entering a room, which is -1: without any action 0: join room 1: create room 2: quick join room
 "roomIdFromCp": "123456" //Game side room number
+ "mgsCpRead":false, //Will return false at the first time, if go back to back end and come to query the player action again, it will return true, games are processed according to business.
+"inviteOpenId":"123" //invitor's openId
 } 
 ```
 
-**Create a room - Example**
+**Create a room - Example**  
 
 After creating the room, the game side can synchronize the data by calling `createRoom`, or synchronize the data through the MGS server.
 
@@ -223,7 +248,7 @@ MgsApi.getInstance().invokeFeature("createRoom", requestCode, params, new MgsFea
         });
 ```
 
-`Request parameters`
+`Request parameters`  
 
 ```java
 {
@@ -233,7 +258,7 @@ MgsApi.getInstance().invokeFeature("createRoom", requestCode, params, new MgsFea
 }
 ```
 
-`Return value`
+`Return value`  
 
 ```java
 {
@@ -245,11 +270,11 @@ MgsApi.getInstance().invokeFeature("createRoom", requestCode, params, new MgsFea
 } 
 ```
 
-**Join a room - Example**
+**Join a room - Example**  
 
 After players join a room, game side need to synchronize the data by calling `joinRoom`
 
-`call example`
+`call example`  
 
 ```java
  
@@ -272,7 +297,7 @@ MgsApi.getInstance().invokeFeature("joinRoom", requestCode, params, new MgsFeatu
         });
 ```
 
-`Request parameters`
+`Request parameters`   
 
 ```java
 {
@@ -292,7 +317,7 @@ MgsApi.getInstance().invokeFeature("joinRoom", requestCode, params, new MgsFeatu
 } 
 ```
 
-**Leave room-example**
+**Leave room-example**  
 
 Game side needs to call `leaveRoom` for data synchronization when the player joins and leaves the room.
 
@@ -317,7 +342,7 @@ MgsApi.getInstance().invokeFeature("leaveRoom", requestCode, params, new MgsFeat
         });
 ```
 
-``Request parameters``
+``Request parameters``  
 
 ```java
 {
@@ -327,13 +352,96 @@ MgsApi.getInstance().invokeFeature("leaveRoom", requestCode, params, new MgsFeat
 
 `Return value`
 
-```java
+Return boolean type string, need to be converted, `true` means leave successfully, `false`means leave failed
+
+**Join team-Example**
+
+After the player joins a certain team, the game party needs to call`joinTeam` to do data synchronization.
+
+`call example`
+
+```
+ //Request parameter
+String params = "{\"roomIdFromCp\":\"1234\", \"backRoomIdFromCp\":\"1233\"}";
+//Request code, the game can distinguish which request is based on the business characteristics, and the default can be 0
+int requestCode = 0;
+//Join team
+MgsApi.getInstance().invokeFeature("joinTeam", requestCode, params, new MgsFeatureListener() {
+            @Override
+            public void onSuccess(int requestCode, String resultJson) {
+                //Join room success callback
+                 // resultJson = {"parentRoomIdFromCp":"720","roomIdFromCp":"721","roomLimit":2,"roomName":"妄赎vo0","roomShowNum":"103218","roomState":1,"roomTags":null}
+            }
+
+            @Override
+            public void onFail(int requestCode, int code, String message) {
+                //fail callback
+            }
+        });
+```
+
+``Request parameters``  
+
+```
 {
-  "data": true, //leave room status, true success  fase:fail 
+  "roomIdFromCp":"1234"  //Game room number
 }
 ```
 
-**View the Player Profile - Example**
+`Return value`
+
+```
+{
+  "roomIdFromCp":"1234", //Game room number
+  "roomLimit":2, //game room capacity
+  "roomName":"房间名称", //room name
+  "roomState":0,  //room status，which - 0: can join now 1: playing (can not join) 2: game end
+  "roomShowNum": "100038",// MGS room number 
+  "parentRoomIdFromCp":null, //will return the ID in team mode 
+  "roomTags":null //Room label, return an array ["label1","label2"]
+} 
+```
+
+
+
+**Leave the team-example**
+
+The player needs to call `leaveTeam` to synchronize data before leaving the room.
+
+`call example`
+
+```
+String params = "{\"roomIdFromCp\":\"1234\"}";
+//Request code, the game can distinguish which request is based on the business characteristics, and the default can be 0
+int requestCode = 0;
+//leave team
+MgsApi.getInstance().invokeFeature("leaveRoom", requestCode, params, new MgsFeatureListener() {
+            @Override
+            public void onSuccess(int requestCode, String resultJson) {
+                //leave team success callback
+                //resultJson = "true"
+            }
+
+            @Override
+            public void onFail(int requestCode, int code, String message) {
+                //fail callback
+            }
+        });
+```
+
+``Request parameters``  
+
+```
+{
+  "roomIdFromCp":"1234"  //Game room number
+}
+```
+
+`Return value`
+
+Return boolean type string, need to be converted, `true` means leave successfully, `false`means leave failed
+
+**View the Player Profile - Example**  
 
 If you need to view the profile information of a 233 players, you can call `showUserProfile` to view it, and the SDK will pop up the profile card popup window.
 
@@ -348,7 +456,7 @@ int requestCode = 0;
 MgsApi.getInstance().invokeFeature("showUserProfile", requestCode, params, null);
 ```
 
-`Request parameters`
+`Request parameters`  
 
 ```java
 {
@@ -360,11 +468,11 @@ MgsApi.getInstance().invokeFeature("showUserProfile", requestCode, params, null)
 
 None
 
-**Checking if a player is a friend - Example**
+**Checking if a player is a friend - Example**  
 
 If you want to check whether the player is a friend, you can call the `isFriendShip` interface to check it.
 
-`call example`
+`call example`  
 
 ```java
 //Request code
@@ -386,7 +494,7 @@ MgsApi.getInstance().invokeFeature("isFriendShip", requestCode, params, new MgsF
         });
 ```
 
-`Request parameters`
+`Request parameters`  
 
 ```java
 {
@@ -396,17 +504,51 @@ MgsApi.getInstance().invokeFeature("isFriendShip", requestCode, params, new MgsF
 
 `Return value`
 
-```java
+Return boolean type string, need to be converted, `true` means is friend, `false`means not friend
+
+**Add friend-example**
+
+If you need to add 233 friends, you can call `addFriend` Interface to add friends.
+
+`call example`  
+
+```
+//Request parameter
+String params = "{\"friendOpenId\":\"1234\"}";
+
+//Request code, the game can distinguish which request is based on the business characteristics, and the default can be 0
+int requestCode = 0;
+//Whether the calling player is a friend
+MgsApi.getInstance().invokeFeature("addFriend", requestCode, params, new MgsFeatureListener() {
+            @Override
+            public void onSuccess(int requestCode, String resultJson) {
+                //success callback resultJson = "true"
+            }
+
+            @Override
+            public void onFail(int requestCode, int code, String message) {
+                //fail callback
+            }
+        });
+```
+
+`Request parameters`  
+
+```
 {
-  "data": true, //friend or not，true: friend  fase: not friend
+  "friendOpenId":"12322323234"  //the plyer openId you want to add
 }
 ```
 
-**Display Floating Windows - example**
+`Return value`
+
+Return boolean type string, need to be converted, `true` means success, `false`means fail.
+
+**Display Floating Windows - example**  
 
 Game side can call `showFloatingLayer` to expand the contents of the hover(floating) layer, and chat/friends functions can be activated
 
-`call example`
+`call example`  
 
 ```java
 //Request code
@@ -428,13 +570,13 @@ MgsApi.getInstance().invokeFeature("showFloatingLayer", requestCode, params, nul
 
 `Return value`
 
-None
+None 
 
-**Display game exit confirmation box - Example**
+**Display game exit confirmation box - Example**  
 
 Game side can call `showExitGameDialog` to display the exit confirmation box.
 
-`call example`
+`call example`  
 
 ```java
   
@@ -442,13 +584,36 @@ Game side can call `showExitGameDialog` to display the exit confirmation box.
 MgsApi.getInstance().invokeFeature("showExitGameDialog", 0, null, null);
 ```
 
-`Request parameters`
+`Request parameters`  
 
 None
 
 `Return value`
 
-None
+None 
+
+## Get the current 233 playground environment
+
+The game party may need to check the 233 Playground version environment during the debugging process, it can test through`getCurrentEnvironment` Can be called before initialization.
+
+API interface:
+
+```
+/**
+ * Get the current 233 environment
+ * @param context
+ * @return Return value, value range (0: test environment 1: pre-release environment 2: online environment)
+ */
+int getCurrentEnvironment(Context context);
+```
+
+`call example`  
+
+```
+int envCode = MgsApi.getInstance().getCurrentEnvironment(context);
+ //Return value, which is 0: Test environment 1: Pre-release environment 2: Online environment
+```
+
 
 
 ## The log report
@@ -467,7 +632,7 @@ API interface:
 void reportLogInfo(String event, String eventDesc, String data);
 ```
 
-`call example`
+`call example`  
 
 ```java
 /**
@@ -489,13 +654,13 @@ private void reportGameLogToMgs(int roomType, int roomLimit) {
  
 ```
 
-`Request parameters`
+`Request parameters` 
 
 Transfer parameter according to the event tracking plan provided by the operation side.
 
 `Return value`
 
-None
+None 
 
 ## Globally listen for SDK notification events
 
@@ -512,7 +677,7 @@ API interface:
  public void registerMgsEventListener(String event, MgsEventListener listener)；
 ```
 
-`Exit game event notification`:
+`Exit game event notification`:  
 
 ```java
 MgsApi.getInstance().registerMgsEventListener("exitGameEvent", new MgsEventListener() {
@@ -523,7 +688,7 @@ MgsApi.getInstance().registerMgsEventListener("exitGameEvent", new MgsEventListe
 });
 ```
 
-`Change room name`:
+`Change room name`:  Abandoned
 
 ```java
 MgsApi.getInstance().registerMgsEventListener("changeRoomNameEvent", new MgsEventListener() {
@@ -531,6 +696,17 @@ MgsApi.getInstance().registerMgsEventListener("changeRoomNameEvent", new MgsEven
     public void onMgsEventHandle(String jsonData) {
         //resultJson = {"roomIdFromCp":"1121","roomName":"modified name"}
         //Synchronize to the game server
+    }
+});
+```
+
+`MGS room delete notification`:
+
+```
+MgsApi.getInstance().registerMgsEventListener("destroyRoomEvent", new MgsEventListener() {
+    @Override
+    public void onMgsEventHandle(String jsonData) {
+        //Dealing with the destruction of the room
     }
 });
 ```

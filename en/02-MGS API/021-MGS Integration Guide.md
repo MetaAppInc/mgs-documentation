@@ -1,4 +1,4 @@
-# I. MGS Integration Guide
+# MGS Integration Guide
 
 ## 1. Developer Platform
 
@@ -16,7 +16,7 @@ After completion of integrating, please refer to the [Integration Process](https
 - **TODO 20210224**  Multichannel self-testing steps, This part of the testing will now be carried out in collaboration with the `MGS integration team`
 - **TODO 20210224** MGS function self-test, This part of the testing will now be carried out in collaboration with the `MGS integration team`
 
-## 3. MGS SDK Operating Process
+## 3. MGS SDK Operating Process 
 
 MGS offers a lightweight and extensible Android SDK for game clients. The server API is also provided, and for some specific interfaces, calls are made by the game server.
 
@@ -29,7 +29,7 @@ MGS offers a lightweight and extensible Android SDK for game clients. The server
 
   ![mgs3](C:\Users\admin\Desktop\CP\March\Wolffun\MGS对接文件20210316\mgs document jpg\4)
 
-## 4. Introduction to Feature Integration
+## 4. Introduction to Features Integration
 
 ### 1. Account Login
 
@@ -63,19 +63,15 @@ When matching, one or more groups form a Team, two or more teams form a Room, an
 
 #### Integrating Method: Synchronous room
 
-![mgs2](C:\Users\admin\Desktop\CP\March\Wolffun\MGS对接文件20210316\mgs document jpg\5)
+![img](C:\Users\admin\Desktop\新建文件夹\Github英文文档\0331 update\1)
 
 In this way, the player pulls up the game client by clicking Create Room/Join Room/Quick Start in 233 playground (as the above screenshot). The game client will call the MGS Android SDK to learn the user's actions (such as joining room A001, creating room, quick match, etc.) and then do the corresponding actions. Existing matching logic can all be kept without affected. When joining a room/create room after the success of the action (game server will check whether the room is full, if players can join the room, match players' level, elo, region that conforms to the rules, and so on), will synchronize to the MGS. MGS will update the room list of 233 Playground online hall.
 
 #### Integrating Method: Host room
 
-**TODO 20210224** This function is the second phase function and is not available yet.
+**TODO 20210224** This function is not available yet.
 
-In this way, the player will stay in 233 Playground when clicking Create Room/Join Room/Quick Start. If you create a room, you will enter a room with waiting screen. If you join a room, you will enter the room with its waiting screen. If Quick Start, depending on the game configuration, you will join a room with an empty seat or enter the matching pool, and wait for 233 Playground to match successfully. After that, whether a room starts the game as a group or a successful match enter the game, 233 Playground will send the room information along with the information of all players to the game server and client.
 
-With host room access, the game only has to configure its own game room properties, match patterns and rules, and wait for 233 Playground to bring the room and the player in.
-
-The MGS host room is still under development and is not yet complete.
 
 ### 4. Voice channel and text chat
 
