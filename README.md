@@ -19,7 +19,7 @@
 - 游戏玩法易懂难精；
 
 ## 后续MGS文档结构
-![](https://cdn.233xyx.com/1617108108842_952.png)
+![](https://cdn.233xyx.com/1617167531079_103.png)
 
 ## 如何联系我们
 联系方式：yanming.hao@appshahe.com
