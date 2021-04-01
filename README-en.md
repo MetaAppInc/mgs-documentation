@@ -2,7 +2,7 @@
 
 ## What is MGS
 
-[![img](https://cdn.233xyx.com/1617276618922_141.png)
+![img](https://cdn.233xyx.com/1617276618922_141.png)
 
 - MGS is a high quality game deep cooperation project initiated by 233, which provides voice, friend empowerment and higher exposure guidance for the game;
 
@@ -10,7 +10,7 @@
 
 ## What we can get if integrated MGS
 
-[![img](https://cdn.233xyx.com/1617276619220_043.png)
+![img](https://cdn.233xyx.com/1617276619220_043.png)
 
 - Basic functions: login, advertising, recharge;
 
@@ -29,8 +29,6 @@
 
 ## MGS documents structure
 
-[![img](https://cdn.233xyx.com/1617259048674_004.png)
-
-<details class="details-reset details-overlay details-overlay-dark" id="jumpto-line-details-dialog" style="box-sizing: border-box; display: block;"><summary data-hotkey="l" aria-label="Jump to line" role="button" style="box-sizing: border-box; display: list-item; cursor: pointer; list-style: none;"></summary></details>
+![img](https://cdn.233xyx.com/1617259048674_004.png)
 
  
