@@ -30,7 +30,7 @@ There are two functions in the current Room,**voice** and **chat room**。
 ### Developer Platform
 You need to turn on **voice** and **chat room** switches.  
 
-![img.png](https://cdn.233xyx.com/1617110054808_839.png)
+![img.png](https://cdn.233xyx.com/1617260038777_500.jpg)
 
 
 # Team
@@ -61,7 +61,7 @@ We use **VoiceScope ** to illustrate the relationship between abilities
 
 For example, as shown in the figure below, if **VoiceScope ** is 2 when the Team is created, the ability to voice is migrated to the Team.
 
-![img.png](https://cdn.233xyx.com/1617110054684_113.png)
+![img.png](https://cdn.233xyx.com/1617260038981_327.png)
 
 
 
