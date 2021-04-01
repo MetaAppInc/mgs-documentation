@@ -93,7 +93,7 @@ Please refer to the service side DEMO (`src/main/java/com/mgs/cloud/game/server/
 
 # User interface -- only for game server
 
-| interface              | Description                                                  |
+| Interface              | Description                                                  |
 | ---------------------- | ------------------------------------------------------------ |
 | Query user information | Interface used to verify user validity and obtain user information |
 

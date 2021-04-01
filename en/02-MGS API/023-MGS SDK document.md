@@ -97,11 +97,12 @@ feature interface list description:
 
 `login` login  
 `queryPlayerAction` query player's actions  
-`createRoom` create room  
+`createAndJoinRoom` create room and join it
 `joinRoom` join room  
 `leaveRoom` leave room  
-`showUserProfile` show player's profile  
+`addFriend` add friend  
 `isFriendShip` detect if the player is a friend  
+`showUserProfile` show player's profile  
 `showFloatingLayer`  show hover(floating) layer (chat:0 / friends:1)
 
 **Login - Example**
@@ -220,9 +221,9 @@ None
 } 
 ```
 
-**Create a room - Example**  
+**Create a room and join it - Example**  
 
-After creating the room, the game side can synchronize the data by calling `createRoom`, or synchronize the data through the MGS server.
+After creating the room, the game side can synchronize the data by calling `createAndJoinRoom`, or synchronize the data through the MGS server.
 
 `call example`
 

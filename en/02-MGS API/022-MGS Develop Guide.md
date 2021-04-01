@@ -30,10 +30,10 @@ There are two functions in the current Room,**voice** and **chat room**。
 ### Developer Platform
 You need to turn on **voice** and **chat room** switches.  
 
+![img.png](https://cdn.233xyx.com/1617110054808_839.png)
+
 
 # Team
-
-# ![mgs服务](C:\Users\admin\Desktop\新建文件夹\Github英文文档\mgs服务.jpg)
 
 Team is a special form of Room, the essence is still Room, and it is worth noting that the **ID of** **Room and the ID of Team use the same storage system, so it cannot be repeated **.  
 However, Team has more properties than Room, such as **parentRoomIdFromCp**, which means that Team and the parentRoom are related.  
@@ -61,4 +61,7 @@ We use **VoiceScope ** to illustrate the relationship between abilities
 
 For example, as shown in the figure below, if **VoiceScope ** is 2 when the Team is created, the ability to voice is migrated to the Team.
 
-![room1](C:\Users\admin\Desktop\新建文件夹\Github英文文档\room1.png)
+![img.png](https://cdn.233xyx.com/1617110054684_113.png)
+
+
+
