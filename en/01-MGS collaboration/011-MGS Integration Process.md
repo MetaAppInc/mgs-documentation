@@ -1,5 +1,5 @@
 # MGS Integration Process
-![011](https://cdn.233xyx.com/1617072660829_407.png)
+![011](https://cdn.233xyx.com/1617260038872_690.png)
 
 #### 1、Register your developer information on the "233 Developer Platform" and create your game
   - Developer Platform Links: https://dev.233leyuan.com

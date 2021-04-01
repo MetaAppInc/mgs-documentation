@@ -10,7 +10,7 @@ How to get the self-testing tool: Check with your 233 contacts and you can get t
 
 ##### 4. Copy the package name of the game package to the information bar at the top of the self-testing tool
 
-![自测](https://cdn.233xyx.com/1617075854020_081.png)
+![自测](https://cdn.233xyx.com/1617260039076_154.png)
 
 ##### 5. Click the "load button" to load the package.
 
