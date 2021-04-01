@@ -23,11 +23,11 @@ MGS offers a lightweight and extensible Android SDK for game clients. The server
 - **TODO 20210224** The SDK will be provided by the 'MGS Integration Engineer' in the form of a standard Android AAR file
 - MGS login process
 
- ![](https://cdn.233xyx.com/1614085716890_248.jpg)
+ ![](https://cdn.233xyx.com/1617276618677_763.jpg)
 
 - MGS room operation process
 
-![](https://cdn.233xyx.com/1614085717113_485.jpg)
+![](https://cdn.233xyx.com/1617276618555_752.jpg)
 
 ## 4. Introduction to Features Integration
 
@@ -63,7 +63,7 @@ When matching, one or more groups form a Team, two or more teams form a Room, an
 
 #### Integrating Method: Synchronous room
 
-![](https://cdn.233xyx.com/1616562567493_081.png)
+![](https://cdn.233xyx.com/1617276619044_256.png)
 
 In this way, the player pulls up the game client by clicking Create Room/Join Room/Quick Start in 233 playground (as the above screenshot). The game client will call the MGS Android SDK to learn the user's actions (such as joining room A001, creating room, quick match, etc.) and then do the corresponding actions. Existing matching logic can all be kept without affected. When joining a room/create room after the success of the action (game server will check whether the room is full, if players can join the room, match players' level, elo, region that conforms to the rules, and so on), will synchronize to the MGS. MGS will update the room list of 233 Playground online hall.
 
@@ -75,7 +75,7 @@ In this way, the player pulls up the game client by clicking Create Room/Join Ro
 
 ### 4. Voice channel and text chat
 
-![](https://cdn.233xyx.com/1612448289651_035.png)
+![](https://cdn.233xyx.com/1617276618791_202.jpg)
 
 Voice channel and text chat are displayed on the hover(floating) layer of 233 Playground. The game only needs to configure whether voice channel and text chat are needed, and on which level voice channel and text chat are placed.
 
