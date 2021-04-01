@@ -35,7 +35,7 @@ You need to turn on **voice** and **chat room** switches.
 
 # Team
 
-Team is a special form of Room, the essence is still Room, and it is worth noting that the **ID of** **Room and the ID of Team use the same storage system, so it cannot be repeated **.  
+Team is a special form of Room, the essence is still Room, and it is worth noting that the **ID of** **Room and the ID of Team use the same storage system, so it cannot be repeated**.  
 However, Team has more properties than Room, such as **parentRoomIdFromCp**, which means that Team and the parentRoom are related.  
 A Team must have a parent Room, otherwise it is meaningless to use Room directly.  
 The **parentRoomIdFromCp** of Team2 and Team3 in the figure below is Room1.
@@ -50,8 +50,8 @@ There are 5 players in each team against each other.
 
 # Distribution of functions in Room and Team
 Since Room(or Team) has both voice and chat Room capabilities, in the case of Room and Team coexist, how to divide the two capabilities?  
-We provide two more fields **VoiceScope ** and **RoomChatScope ** in the interface parameter that creates the Team.  
-We use **VoiceScope ** to illustrate the relationship between abilities
+We provide two more fields **VoiceScope** and **RoomChatScope** in the interface parameter that creates the Team.  
+We use **VoiceScope** to illustrate the relationship between abilities
 
 | voiceScope | function scope |
 | ---------- | -------------- |
@@ -59,7 +59,7 @@ We use **VoiceScope ** to illustrate the relationship between abilities
 | 1          | room           |
 | 2          | team           |
 
-For example, as shown in the figure below, if **VoiceScope ** is 2 when the Team is created, the ability to voice is migrated to the Team.
+For example, as shown in the figure below, if **VoiceScope** is 2 when the Team is created, the ability to voice is migrated to the Team.
 
 ![img.png](https://cdn.233xyx.com/1617260038981_327.png)
 
