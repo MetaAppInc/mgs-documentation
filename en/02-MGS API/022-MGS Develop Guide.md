@@ -1,7 +1,21 @@
-# MGS API Mind maps
+
+<!-- TOC -->
+
+- [API Mind maps](#api-mind-maps)
+- [Terminology](#terminology)
+- [Room](#room)
+    - [Room's life cycle](#rooms-life-cycle)
+    - [Room's functions](#rooms-functions)
+    - [Open condition of Room function](#open-condition-of-room-function)
+    - [Team](#team)
+    - [Distribution of functions in Room and Team](#distribution-of-functions-in-room-and-team)
+
+<!-- /TOC -->
+
+# API Mind maps
 ![img.png](https://cdn.233xyx.com/1617110054459_929.png)
 
-# MGS Terminology
+# Terminology
 
 | Noun         | meaning                                             |
 | ------------ | --------------------------------------------------- |
@@ -16,24 +30,24 @@
 # Room
 Room is a form of organization with a certain number of members, capacity and status.
 
-# Room's life cycle
+## Room's life cycle
 The life cycle of the room should look like the following figure
 
 ![img.png](https://cdn.233xyx.com/1617110054581_242.png)
 
-# Room's functions
+## Room's functions
 There are two functions in the current Room,**voice** and **chat room**。  
 **voice** means that members in the room can communicate via instant voice.  
 **chat room** means that members of a room can communicate with each other through text.
 
-# Open condition of Room function
-### Developer Platform
-You need to turn on **voice** and **chat room** switches.  
+## Open condition of Room function
+`Developer Platform`
+You need to turn on **voice** and **chat room** switches.
 
 ![img.png](https://cdn.233xyx.com/1617260038777_500.jpg)
 
 
-# Team
+## Team
 
 Team is a special form of Room, the essence is still Room, and it is worth noting that the **ID of** **Room and the ID of Team use the same storage system, so it cannot be repeated**.  
 However, Team has more properties than Room, such as **parentRoomIdFromCp**, which means that Team and the parentRoom are related.  
@@ -48,7 +62,7 @@ In this case, there are 10 people in the room, but they need to be divided into 
 
 There are 5 players in each team against each other.
 
-# Distribution of functions in Room and Team
+## Distribution of functions in Room and Team
 Since Room(or Team) has both voice and chat Room capabilities, in the case of Room and Team coexist, how to divide the two capabilities?  
 We provide two more fields **VoiceScope** and **RoomChatScope** in the interface parameter that creates the Team.  
 We use **VoiceScope** to illustrate the relationship between abilities
