@@ -13,7 +13,7 @@
   - CP to obtain the docking parameters
     - CP needs to register two games on 233 developer platform and get two sets of parameters: appKey、appSecret；
       - Official Game: Package name ending in [**.mgs.meta**], game name plus "-online"
-      - Test Game: Package name ending in [.test.mgs.meta], game name with "-mgsTest"
+      - Test Game: Package name ending in [**.test.mgs.meta**], game name with "-mgsTest"
     - When registering a game, select "MGS Games"
   - During MGS docking, use "test game" docking
   - CP Party uploads the game package to the developer platform, and after the approval of 233 members, it can search for its own game in [233 Playground].
