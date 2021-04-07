@@ -1,3 +1,31 @@
+<!-- TOC -->
+
+- [`MGS安卓SDK` API文档](#mgs安卓sdk-api文档)
+    - [接入方式](#接入方式)
+    - [初始化](#初始化)
+    - [SDK动态功能接口](#sdk动态功能接口)
+        - [登录](#登录)
+        - [查询接口是否可用](#查询接口是否可用)
+        - [查询玩家进入房间时的操作方式](#查询玩家进入房间时的操作方式)
+        - [创建房间](#创建房间)
+        - [加入房间](#加入房间)
+        - [离开房间](#离开房间)
+        - [加入队伍](#加入队伍)
+        - [离开队伍](#离开队伍)
+        - [查看玩家资料卡片](#查看玩家资料卡片)
+        - [检测玩家是否是好友关系](#检测玩家是否是好友关系)
+        - [添加好友-示例](#添加好友-示例)
+        - [显示悬浮窗](#显示悬浮窗)
+        - [显示游戏退出确认框](#显示游戏退出确认框)
+    - [获取当前233乐园环境](#获取当前233乐园环境)
+    - [日志上报](#日志上报)
+    - [全局监听SDK通知事件](#全局监听sdk通知事件)
+        - [退出游戏事件通知](#退出游戏事件通知)
+        - [MGS房间销毁通知](#mgs房间销毁通知)
+    - [SDK销毁](#sdk销毁)
+
+<!-- /TOC -->
+
 # `MGS安卓SDK` API文档
 
 ## 接入方式
@@ -111,7 +139,7 @@ feature接口列表描述:
 `getCpRoomIdByRoomShowNum` 根据233房间号查找游戏方的房间号    
 
 
-**登录-示例**
+### 登录
 
 游戏方在使用其他接口前，需要先调用`login`接口。
 
@@ -171,7 +199,7 @@ MgsApi.getInstance().invokeFeature("login", requestCode, null, new MgsFeatureLis
        
 ```
 
-**查询接口是否可用**
+### 查询接口是否可用
 
 SDK提供了`isSupportedFeature`接口，用于查询接口是否可用。
 
@@ -189,7 +217,7 @@ if(isSupported) {
 
 ```
 
-**查询玩家进入房间时的操作方式-示例**
+### 查询玩家进入房间时的操作方式
 
 游戏方可在玩家进入到游戏适当的时候调用该接口，查询玩家进入游戏时的操作方式，游戏方可根据操作进行相应的业务逻辑处理。
 
@@ -232,7 +260,7 @@ MgsApi.getInstance().invokeFeature("queryPlayerAction", requestCode, null, new M
 } 
 ```
 
-**创建房间-示例**
+### 创建房间  
 
 游戏方创建好房间后可通过调用`createAndJoinRoom`进行数据同步，也可通过MGS服务端进行数据同步。
 
@@ -286,7 +314,7 @@ MgsApi.getInstance().invokeFeature("createAndJoinRoom", requestCode, params, new
 } 
 ```
 
-**加入房间-示例**
+### 加入房间  
 
 游戏方在玩家加入某个房间后，需要通过调用`joinRoom`进行数据同步。
 
@@ -337,7 +365,7 @@ MgsApi.getInstance().invokeFeature("joinRoom", requestCode, params, new MgsFeatu
 } 
 ```
 
-**离开房间-示例**
+### 离开房间
 
 游戏方在玩家离开房间前，需要调用`leaveRoom`进行数据同步。
 
@@ -377,7 +405,7 @@ MgsApi.getInstance().invokeFeature("leaveRoom", requestCode, params, new MgsFeat
   
 
 
-**加入队伍-示例**
+### 加入队伍  
 
 游戏方在玩家加入某个队伍后，需要通过调用`joinTeam`进行数据同步。
 
@@ -430,7 +458,7 @@ MgsApi.getInstance().invokeFeature("joinTeam", requestCode, params, new MgsFeatu
 ```
 
 
-**离开队伍-示例**
+### 离开队伍
 
 游戏方在玩家离开队伍，需要调用`leaveTeam`进行数据同步。
 
@@ -469,7 +497,7 @@ MgsApi.getInstance().invokeFeature("leaveTeam", requestCode, params, new MgsFeat
 返回boolean类型字符串，需要进行转换 , `true`为离开成功，`false`为离开失败
 
 
-**查看玩家资料卡片-示例**
+### 查看玩家资料卡片
 
 若需要查看233玩家的资料信息,可通过调用`showUserProfile`进行查看,SDK会弹出资料卡片弹窗。
 
@@ -497,7 +525,7 @@ MgsApi.getInstance().invokeFeature("showUserProfile", requestCode, params, null)
 
 无
 
-**检测玩家是否是好友关系-示例**
+### 检测玩家是否是好友关系
 
 若需要检测玩家是否好友关系，可通过调用`isFriendShip`接口进行查看。
 
@@ -538,7 +566,7 @@ MgsApi.getInstance().invokeFeature("isFriendShip", requestCode, params, new MgsF
 返回boolean类型字符串，需要进行转换 , `true`为是好友，`false`为不是好友
 
 
-**添加好友-示例**
+### 添加好友-示例
 
 若需要添加233好友，可通过调用`addFriend`接口进行添加好友。
 
@@ -580,7 +608,7 @@ MgsApi.getInstance().invokeFeature("addFriend", requestCode, params, new MgsFeat
 
 
 
-**显示悬浮窗-示例**
+### 显示悬浮窗
 
 游戏方可调用`showFloatingLayer`来展开悬浮层的内容，可展开聊天/好友功能。
 
@@ -611,7 +639,7 @@ MgsApi.getInstance().invokeFeature("showFloatingLayer", requestCode, params, nul
 无
   
 
-**显示游戏退出确认框-示例**
+### 显示游戏退出确认框
 
 游戏方可调用`showExitGameDialog`来显示退出游戏确认框。
 
@@ -726,7 +754,7 @@ API接口:
  public void registerMgsEventListener(String event, MgsEventListener listener)；
 ```
 
-`退出游戏事件通知`:
+### 退出游戏事件通知
 
 ```java
 
@@ -752,7 +780,7 @@ MgsApi.getInstance().registerMgsEventListener("changeRoomNameEvent", new MgsEven
 ``` 
 
 
-`MGS房间销毁通知`:  
+### MGS房间销毁通知
 
 ```java
 

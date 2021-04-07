@@ -1,3 +1,31 @@
+<!-- TOC -->
+
+- [`MGS Android SDK` API Guide](#mgs-android-sdk-api-guide)
+    - [Access Method](#access-method)
+    - [Initialization](#initialization)
+    - [SDK Dynamic Function Interface](#sdk-dynamic-function-interface)
+        - [Login](#login)
+        - [Queries if the interface is available](#queries-if-the-interface-is-available)
+        - [Queries player's actions when entering a room](#queries-players-actions-when-entering-a-room)
+        - [Create a room and join it](#create-a-room-and-join-it)
+        - [Join a room](#join-a-room)
+        - [Leave room](#leave-room)
+        - [Join team](#join-team)
+        - [Leave the team](#leave-the-team)
+        - [View the Player Profile](#view-the-player-profile)
+        - [Checking if a player is a friend](#checking-if-a-player-is-a-friend)
+        - [Add friend](#add-friend)
+        - [Display Floating Windows](#display-floating-windows)
+        - [Display game exit confirmation box](#display-game-exit-confirmation-box)
+    - [Get the current 233 playground environment](#get-the-current-233-playground-environment)
+    - [The log report](#the-log-report)
+    - [Globally listen for SDK notification events](#globally-listen-for-sdk-notification-events)
+        - [Exit game event notification](#exit-game-event-notification)
+        - [MGS room delete notification](#mgs-room-delete-notification)
+    - [SDK Destroy](#sdk-destroy)
+
+<!-- /TOC -->
+
 # `MGS Android SDK` API Guide
 
 ## Access Method
@@ -105,7 +133,7 @@ feature interface list description:
 `showUserProfile` show player's profile  
 `showFloatingLayer`  show hover(floating) layer (chat:0 / friends:1)
 
-**Login - Example**
+### Login
 
 Game side need to call the `login` interface before they can use any other interface.
 
@@ -164,7 +192,7 @@ None
        
 ```
 
-**Queries if the interface is available**
+### Queries if the interface is available  
 
 SDK provides interface for `isSupportedFeature`  and it can be used to check if the interface is available to use.
 
@@ -181,7 +209,7 @@ if(isSupported) {
 
 
 
-**Queries player's actions when entering a room - Example**  
+### Queries player's actions when entering a room  
 
 Game side can call the interface when the player enters the game at the appropriate time, query the actions when the player enters the game, game side can carry out the corresponding business logic processing according to the operation.
 
@@ -221,7 +249,7 @@ None
 } 
 ```
 
-**Create a room and join it - Example**  
+### Create a room and join it  
 
 After creating the room, the game side can synchronize the data by calling `createAndJoinRoom`, or synchronize the data through the MGS server.
 
@@ -271,7 +299,7 @@ MgsApi.getInstance().invokeFeature("createRoom", requestCode, params, new MgsFea
 } 
 ```
 
-**Join a room - Example**  
+### Join a room    
 
 After players join a room, game side need to synchronize the data by calling `joinRoom`
 
@@ -318,7 +346,7 @@ MgsApi.getInstance().invokeFeature("joinRoom", requestCode, params, new MgsFeatu
 } 
 ```
 
-**Leave room-example**  
+### Leave room    
 
 Game side needs to call `leaveRoom` for data synchronization when the player joins and leaves the room.
 
@@ -355,7 +383,7 @@ MgsApi.getInstance().invokeFeature("leaveRoom", requestCode, params, new MgsFeat
 
 Return boolean type string, need to be converted, `true` means leave successfully, `false`means leave failed
 
-**Join team-Example**
+### Join team  
 
 After the player joins a certain team, the game party needs to call`joinTeam` to do data synchronization.
 
@@ -405,7 +433,7 @@ MgsApi.getInstance().invokeFeature("joinTeam", requestCode, params, new MgsFeatu
 
 
 
-**Leave the team-example**
+### Leave the team  
 
 The player needs to call `leaveTeam` to synchronize data before leaving the room.
 
@@ -442,7 +470,7 @@ MgsApi.getInstance().invokeFeature("leaveRoom", requestCode, params, new MgsFeat
 
 Return boolean type string, need to be converted, `true` means leave successfully, `false`means leave failed
 
-**View the Player Profile - Example**  
+### View the Player Profile    
 
 If you need to view the profile information of a 233 players, you can call `showUserProfile` to view it, and the SDK will pop up the profile card popup window.
 
@@ -469,7 +497,7 @@ MgsApi.getInstance().invokeFeature("showUserProfile", requestCode, params, null)
 
 None
 
-**Checking if a player is a friend - Example**  
+### Checking if a player is a friend    
 
 If you want to check whether the player is a friend, you can call the `isFriendShip` interface to check it.
 
@@ -507,7 +535,7 @@ MgsApi.getInstance().invokeFeature("isFriendShip", requestCode, params, new MgsF
 
 Return boolean type string, need to be converted, `true` means is friend, `false`means not friend
 
-**Add friend-example**
+### Add friend
 
 If you need to add 233 friends, you can call `addFriend` Interface to add friends.
 
@@ -545,7 +573,7 @@ MgsApi.getInstance().invokeFeature("addFriend", requestCode, params, new MgsFeat
 
 Return boolean type string, need to be converted, `true` means success, `false`means fail.
 
-**Display Floating Windows - example**  
+### Display Floating Windows    
 
 Game side can call `showFloatingLayer` to expand the contents of the hover(floating) layer, and chat/friends functions can be activated
 
@@ -573,7 +601,7 @@ MgsApi.getInstance().invokeFeature("showFloatingLayer", requestCode, params, nul
 
 None 
 
-**Display game exit confirmation box - Example**  
+### Display game exit confirmation box    
 
 Game side can call `showExitGameDialog` to display the exit confirmation box.
 
@@ -678,7 +706,7 @@ API interface:
  public void registerMgsEventListener(String event, MgsEventListener listener)；
 ```
 
-`Exit game event notification`:  
+### Exit game event notification  
 
 ```java
 MgsApi.getInstance().registerMgsEventListener("exitGameEvent", new MgsEventListener() {
@@ -701,7 +729,7 @@ MgsApi.getInstance().registerMgsEventListener("changeRoomNameEvent", new MgsEven
 });
 ```
 
-`MGS room delete notification`:
+### MGS room delete notification
 
 ```
 MgsApi.getInstance().registerMgsEventListener("destroyRoomEvent", new MgsEventListener() {
