@@ -1,3 +1,22 @@
+<!-- TOC -->
+
+- [MGS Integration Guide](#mgs-integration-guide)
+    - [1. Developer Platform](#1-developer-platform)
+    - [2. Integration self-test, sample game code reference](#2-integration-self-test-sample-game-code-reference)
+    - [3. MGS SDK Operating Process](#3-mgs-sdk-operating-process)
+    - [4. Introduction to Features Integration](#4-introduction-to-features-integration)
+        - [1. Account Login](#1-account-login)
+        - [2. Friend Invitation](#2-friend-invitation)
+        - [3. Room Match](#3-room-match)
+            - [Room mode: normal room mode](#room-mode-normal-room-mode)
+            - [Room mode: party room mode](#room-mode-party-room-mode)
+            - [Integrating Method: Synchronous room](#integrating-method-synchronous-room)
+            - [Integrating Method: Host room](#integrating-method-host-room)
+        - [4. Voice channel and text chat](#4-voice-channel-and-text-chat)
+        - [5. Sample Game Server and Sample Game Client](#5-sample-game-server-and-sample-game-client)
+
+<!-- /TOC -->
+
 # MGS Integration Guide
 
 ## 1. Developer Platform
@@ -16,14 +35,14 @@ After completion of integrating, please refer to the [Integration Process](https
 - **TODO 20210224**  Multichannel self-testing steps, This part of the testing will now be carried out in collaboration with the `MGS integration team`
 - **TODO 20210224** MGS function self-test, This part of the testing will now be carried out in collaboration with the `MGS integration team`
 
-## 3. MGS SDK Operating Process 
+## 3. MGS SDK Operating Process
 
 MGS offers a lightweight and extensible Android SDK for game clients. The server API is also provided, and for some specific interfaces, calls are made by the game server.
 
 - **TODO 20210224** The SDK will be provided by the 'MGS Integration Engineer' in the form of a standard Android AAR file
 - MGS login process
 
- ![](https://cdn.233xyx.com/1617276618677_763.jpg)
+![](https://cdn.233xyx.com/1617276618677_763.jpg)
 
 - MGS room operation process
 

@@ -1,4 +1,34 @@
-# `MGS Server` API Guide
+<!-- TOC -->
+
+- [Read First](#read-first)
+  - [Access Address](#access-address)
+  - [Public request header](#public-request-header)
+  - [Server error code](#server-error-code)
+- [Interface](#interface)
+  - [User interface](#user-interface)
+    - [Query user information](#query-user-information)
+  - [Friend interface](#friend-interface)
+    - [If the player is friend](#if-the-player-is-friend)
+  - [Room interface](#room-interface)
+    - [Create room](#create-room)
+    - [Destroy room](#destroy-room)
+    - [Query Room Information](#query-room-information)
+    - [Remove room members](#remove-room-members)
+    - [Search room(optional)](#search-roomoptional)
+    - [Query room information (optional, for debugging)](#query-room-information-optional-for-debugging)
+    - [Query room records (optional, for debugging)](#query-room-records-optional-for-debugging)
+  - [Team interface(optional)](#team-interfaceoptional)
+    - [Create Team](#create-team)
+    - [Destroy Team](#destroy-team)
+    - [Synchronize team information](#synchronize-team-information)
+    - [Remove team members](#remove-team-members)
+    - [Query team information (optional, for debugging)](#query-team-information-optional-for-debugging)
+    - [Query team records (optional, for debugging)](#query-team-records-optional-for-debugging)
+    - [Synchronize room members(suggest to apply)](#synchronize-room-memberssuggest-to-apply)
+
+<!-- /TOC -->
+
+# Read First
 
 ## Access Address
 
@@ -14,7 +44,7 @@ All of the following interfaces need to set the header information :A
 
 **Signature rules**
 
-The general steps for signature generation are as follows:  
+The general steps for signature generation are as follows:
 
 In the first step, let all data sent or received be set M, and sort the parameters of non-empty parameter values in set M from smallest to largest in terms of parameter name ASCII code (lexicodically), using the format of URL key-value pairs (that is, key1=value1&key2=value2...). Concatenate the string stringA.
 
@@ -38,7 +68,7 @@ Pay attention to the following important rules:
 
 - The Json nested type does not support toString() to directly verify the signature. It is necessary to assemble the data of the nested type into a Json string, and then participate in the signature operation;
 
-The second step is to get the stringSignTemp string by concatenating the key at the end of stringA, and perform MD5 operation on stringSignTemp, and then convert all characters of the obtained string to uppercase, and get the signValue of sign. 
+The second step is to get the stringSignTemp string by concatenating the key at the end of stringA, and perform MD5 operation on stringSignTemp, and then convert all characters of the obtained string to uppercase, and get the signValue of sign.
 
 Note: In order to prevent the simple interface parameters or the input parameters from being relatively fixed, it is recommended to add a nonce to the parameter body as the parameter key, and the value as a timestamp or a random string (participating in parameter signatures) to increase the randomness of the signature value when developing access. , To prevent the disclosure of secret keys caused by network hijacking; [non-mandatory]
 
@@ -46,13 +76,13 @@ For example:
 
 Sign is the signature obtained by signing the request parameters with the secret key of CP server side and the request parameters together. Every interface request will conduct data signature verification according to the secret key corresponding to the parameters and APP.
 
-Assume that the parameters of the transmission is as follows:  {"id":"1298b012345678","name":"Recoba"} 
+Assume that the parameters of the transmission is as follows:  {"id":"1298b012345678","name":"Recoba"}
 
-Step 1: the parameters according to the key = value format, and sorted by parameter name ASCII dictionary sequence is as follows:  string = "name=Recoba&id=1298b012345678"; 
+Step 1: the parameters according to the key = value format, and sorted by parameter name ASCII dictionary sequence is as follows:  string = "name=Recoba&id=1298b012345678";
 
-Step 2: Splice the API key:  
+Step 2: Splice the API key:
 
-MD5 signature method:   
+MD5 signature method:
 
 ```
 stringSignTemp=stringA+"&key=$appsecret" //Note: key is the application key obtained by applying for the 233 developer platform(appsecret)   
@@ -64,7 +94,7 @@ Please refer to the service side DEMO (`src/main/java/com/mgs/cloud/game/server/
 
 
 
-# Server error code
+## Server error code
 
 | Error type                                                   | error code(code) |                    error message(message)                    |
 | ------------------------------------------------------------ | ---------------- | :----------------------------------------------------------: |
@@ -90,13 +120,15 @@ Please refer to the service side DEMO (`src/main/java/com/mgs/cloud/game/server/
 | Gateway verification request verification is incorrect       | 25052            |                Signature verification failed                 |
 
 
-# User interface -- only for game server
+# Interface
+
+## User interface
 
 | Interface              | Description                                                  |
 | ---------------------- | ------------------------------------------------------------ |
 | Query user information | Interface used to verify user validity and obtain user information |
 
-## Query user information
+### Query user information
 
 **Interface description**:
 
@@ -132,13 +164,13 @@ The interface used to verify the user's validity and obtain user information.
 }
 ```
 
-# Friend interface -- only for game server
+## Friend interface
 
 | Interface                 | Description                                 |
 | ------------------------- | ------------------------------------------- |
 | If the player is a friend | Used to verify the friendship between users |
 
-## If the player is friend
+### If the player is friend
 
 **Interface description**:
 
@@ -176,7 +208,7 @@ Used to verify the friendship between users, support batch, support up to 50 use
 
 
 
-# Room interface -- only for game server
+## Room interface
 
 | Interface                              | Description                                                  |
 | -------------------------------------- | ------------------------------------------------------------ |
@@ -188,7 +220,7 @@ Used to verify the friendship between users, support batch, support up to 50 use
 | Query room information (for debugging) | Query room information for debugging                         |
 | Query room records (for debugging)     | Can query all the records of the entire life cycle of the room, used to debug and compare whether the operations on the game side and mgs are consistent, used for debugging |
 
-## Create room
+### Create room
 
 **Interface description**:
 
@@ -237,7 +269,7 @@ Optional, the Game Server can call MGS's Create Room interface to synchronize th
 ```
 
 
-## Destroy room
+### Destroy room
 
 **interface description**:
 
@@ -269,7 +301,7 @@ If the player's room is destroyed, it needs to be synchronchronized to MGS simul
 ```
 
 
-## Query Room Information
+### Query Room Information
 
 **interface description**:
 
@@ -305,7 +337,7 @@ Game side can query the basic information of the MGS room through this interface
 
 
 
-## Remove room members
+### Remove room members
 
 **Interface description**:
 
@@ -340,7 +372,7 @@ When this interface is called, the MGS server will notify other members in the r
 
 
 
-## Search room(optional)
+### Search room(optional)
 
 **Interface description**:
 
@@ -371,7 +403,7 @@ At the same time, the MGS SDK also provides an interface with the same capabilit
 }
 ```
 
-## Query room information (optional, for debugging)
+### Query room information (optional, for debugging)
 
 **Interface description**:
 
@@ -411,7 +443,7 @@ Query room information, optional, used for debugging
 }
 ```
 
-## Query room records (optional, for debugging)
+### Query room records (optional, for debugging)
 
 **Interface description**:
 
@@ -482,7 +514,7 @@ Can query all records of the entire life cycle of the room, used to debug and co
 }
 ```
 
-# Team interface-dedicated to game server (optional)
+## Team interface(optional)
 
 | Interface                              | Description                                                     |
 | -------------------------------------- | ------------------------------------------------------------ |
@@ -493,7 +525,7 @@ Can query all records of the entire life cycle of the room, used to debug and co
 | Remove team members                    | Use in scenarios where abnormal users need to be deleted, such as when users are offline |
 | Query team information (for debugging) | Query team information for debugging                         |
 
-## Create Team
+### Create Team
 
 **Interface description**:
 
@@ -545,7 +577,7 @@ The game server can call the team creation interface of MGS after team creation.
 }
 ```
 
-## Destroy Team 
+### Destroy Team
 
 **Interface description**:
 
@@ -575,7 +607,7 @@ If the game team is destroyed, the team must be destroyed simultaneously to MGS.
 }
 ```
 
-## Synchronize team information
+### Synchronize team information
 
 **Interface description**:
 
@@ -609,7 +641,7 @@ This interface is called only when there is information change, for example, the
 }
 ```
 
-## Remove team members
+### Remove team members
 
 **Interface description**:
 
@@ -641,7 +673,7 @@ When this interface is called, the MGS server will notify other members of the t
 }
 ```
 
-## Query team information (optional, for debugging)
+### Query team information (optional, for debugging)
 
 **Interface description**:
 
@@ -684,7 +716,7 @@ Query team information, optional, for debugging
 }
 ```
 
-## Query team records (optional, for debugging)
+### Query team records (optional, for debugging)
 
 **Interface description**:
 
@@ -757,7 +789,7 @@ Can query all records of the team's entire life cycle, used to debug and compare
 
 
 
-## Synchronize room members(suggest to apply)
+### Synchronize room members(suggest to apply)
 
 **Interface description**:
 
