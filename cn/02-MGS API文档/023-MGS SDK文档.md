@@ -1,28 +1,28 @@
 <!-- TOC -->
 
-- [`MGS安卓SDK` API文档](#mgs安卓sdk-api文档)
-    - [接入方式](#接入方式)
-    - [初始化](#初始化)
-    - [SDK动态功能接口](#sdk动态功能接口)
-        - [登录](#登录)
-        - [查询接口是否可用](#查询接口是否可用)
-        - [查询玩家进入房间时的操作方式](#查询玩家进入房间时的操作方式)
-        - [创建房间](#创建房间)
-        - [加入房间](#加入房间)
-        - [离开房间](#离开房间)
-        - [加入队伍](#加入队伍)
-        - [离开队伍](#离开队伍)
-        - [查看玩家资料卡片](#查看玩家资料卡片)
-        - [检测玩家是否是好友关系](#检测玩家是否是好友关系)
-        - [添加好友-示例](#添加好友-示例)
-        - [显示悬浮窗](#显示悬浮窗)
-        - [显示游戏退出确认框](#显示游戏退出确认框)
-    - [获取当前233乐园环境](#获取当前233乐园环境)
-    - [日志上报](#日志上报)
-    - [全局监听SDK通知事件](#全局监听sdk通知事件)
-        - [退出游戏事件通知](#退出游戏事件通知)
-        - [MGS房间销毁通知](#mgs房间销毁通知)
-    - [SDK销毁](#sdk销毁)
+- [`MGS安卓SDK` API文档][1]
+	- [接入方式][2]
+	- [初始化][3]
+	- [SDK动态功能接口][4]
+		- [登录][5]
+		- [查询接口是否可用][6]
+		- [查询玩家进入房间时的操作方式][7]
+		- [创建房间][8]
+		- [加入房间][9]
+		- [离开房间][10]
+		- [加入队伍][11]
+		- [离开队伍][12]
+		- [查看玩家资料卡片][13]
+		- [检测玩家是否是好友关系][14]
+		- [添加好友-示例][15]
+		- [显示悬浮窗][16]
+		- [显示游戏退出确认框][17]
+	- [获取当前233乐园环境][18]
+	- [日志上报][19]
+	- [全局监听SDK通知事件][20]
+		- [退出游戏事件通知][21]
+		- [MGS房间销毁通知][22]
+	- [SDK销毁][23]
 
 <!-- /TOC -->
 
@@ -94,18 +94,18 @@ public interface MgsFeatureListener {
 
 code错误码:
 
-- 公用:    
-  `10100`: 初始化失败  
-  `10200`: 服务连接失败  
-  `400`: 参数错误  
-  `500`: 系统异常，请稍后再试或联系客服人员  
-  `401`: 身份验证错误
+- 公用:  
+	  `10100`: 初始化失败  
+	  `10200`: 服务连接失败  
+	  `400`: 参数错误  
+	  `500`: 系统异常，请稍后再试或联系客服人员  
+	  `401`: 身份验证错误
 
 - 房间相关:  
-  `80001`: 房间不存在  
-  `80002`: 房间已销毁   
-  `80003`: 房间已满  
-  `80004`: 房间不允许操作
+	  `80001`: 房间不存在  
+	  `80002`: 房间已销毁  
+	  `80003`: 房间已满  
+	  `80004`: 房间不允许操作
 
 
 API接口：
@@ -125,18 +125,18 @@ void invokeFeature(String feature, int requestCode, String jsonParams, MgsFeatur
 
 feature接口列表描述:
 
-`login` 登录   
-`queryPlayerAction` 查询玩家操作方式   
-`createAndJoinRoom` 创建并加入房间   
-`joinRoom` 加入房间    
-`leaveRoom` 离开房间   
-`joinTeam` 加入队伍   
-`leaveTeam` 离开队伍   
+`login` 登录  
+`queryPlayerAction` 查询玩家操作方式  
+`createAndJoinRoom` 创建并加入房间  
+`joinRoom` 加入房间  
+`leaveRoom` 离开房间  
+`joinTeam` 加入队伍  
+`leaveTeam` 离开队伍  
 `addFriend` 添加好友  
-`showUserProfile` 查看玩家资料信息   
-`isFriendShip` 检测玩家是否好友关系   
-`showFloatingLayer` 显示悬浮层(聊天:0 / 好友:1)   
-`getCpRoomIdByRoomShowNum` 根据233房间号查找游戏方的房间号    
+`showUserProfile` 查看玩家资料信息  
+`isFriendShip` 检测玩家是否好友关系  
+`showFloatingLayer` 显示悬浮层(聊天:0 / 好友:1)  
+`getCpRoomIdByRoomShowNum` 根据233房间号查找游戏方的房间号  
 
 
 ### 登录
@@ -181,7 +181,7 @@ MgsApi.getInstance().invokeFeature("login", requestCode, null, new MgsFeatureLis
         ToastUtils.showToast(getContext(), "Mgs login fail callback "+message);
     }
 }); 
-``` 
+```
 
 `请求参数`
 
@@ -388,7 +388,7 @@ MgsApi.getInstance().invokeFeature("leaveRoom", requestCode, params, new MgsFeat
                 //失败回调
             }
         });
-``` 
+```
 
 `请求参数`
 
@@ -403,6 +403,58 @@ MgsApi.getInstance().invokeFeature("leaveRoom", requestCode, params, new MgsFeat
 
 返回boolean类型字符串，需要进行转换 , `true`为离开成功，`false`为离开失败
   
+### 切换房间 v2.1.0新增  
+
+游戏方在玩家切换某个房间后，需要通过调用`switchRoom`进行数据同步。
+
+
+`调用示例`
+
+```java
+ 
+ //请求参数
+String params = "{\"originRoomIdFromCp\":\"1234\",\"targetRoomIdFromCp\":\"3312\"}";
+//请求码,游戏可根据业务特征来就进行区分是哪次请求,默认可传0
+int requestCode = 0;
+//切换房间
+MgsApi.getInstance().invokeFeature("switchRoom", requestCode, params, new MgsFeatureListener() {
+            @Override
+            public void onSuccess(int requestCode, String resultJson) {
+                //切换房间成功回调
+                 // resultJson =  {"parentRoomIdFromCp":null,"roomIdFromCp":"游戏方房间号","roomLimit":8,"roomName":"房间名","roomShowNum":"103216","roomState":0,"roomTags":null}
+            }
+
+            @Override
+            public void onFail(int requestCode, int code, String message) {
+                //失败回调
+            }
+        });
+```
+
+`请求参数`
+
+```java
+{
+  "originRoomIdFromCp":"1234",  //当前游戏方房间号
+  "targetRoomIdFromCp":"3312"   //要切换的游戏方房间号
+}
+```
+
+
+`返回值`
+
+```java
+{
+  "roomIdFromCp":"1234", //游戏方房间号
+  "roomLimit":2, //游戏方房间容量
+  "roomName":"房间名称", //房间名称
+  "roomState":0,  //房间状态，取值 - 0: 可加入 1: 正在玩 (不可加入) 2: 游戏结束
+  "roomShowNum": "100038",// MGS房间号 
+  "parentRoomIdFromCp":null, //组队模式会返回该ID
+  "roomTags":null //房间标签，返回的是数组["标签1","标签2"]
+} 
+```
+
 
 
 ### 加入队伍  
@@ -481,7 +533,7 @@ MgsApi.getInstance().invokeFeature("leaveTeam", requestCode, params, new MgsFeat
                 //失败回调
             }
         });
-``` 
+```
 
 `请求参数`
 
@@ -550,7 +602,7 @@ MgsApi.getInstance().invokeFeature("isFriendShip", requestCode, params, new MgsF
                 //失败回调
             }
         });
-``` 
+```
 
 `请求参数`
 
@@ -591,7 +643,7 @@ MgsApi.getInstance().invokeFeature("addFriend", requestCode, params, new MgsFeat
                 //失败回调
             }
         });
-``` 
+```
 
 `请求参数`
 
@@ -623,7 +675,7 @@ String params = "{\"tab\": 1}";
 int requestCode = 0;
 //调用玩家是否是好友关系
 MgsApi.getInstance().invokeFeature("showFloatingLayer", requestCode, params, null);
-``` 
+```
 
 `请求参数`
 
@@ -649,7 +701,7 @@ MgsApi.getInstance().invokeFeature("showFloatingLayer", requestCode, params, nul
   
 //调用玩家是否是好友关系
 MgsApi.getInstance().invokeFeature("showExitGameDialog", 0, null, null);
-``` 
+```
 
 `请求参数`
 
@@ -659,7 +711,86 @@ MgsApi.getInstance().invokeFeature("showExitGameDialog", 0, null, null);
 
 无
 
- 
+### 加入语音频道 v2.1.0新增
+
+游戏方可调用`joinAudio`加入语音频道，游戏用户可使用语音服务（可说话、可听到其他游戏用户声音）。
+
+`调用示例`
+
+```java
+  
+//调用玩家是否是好友关系
+MgsApi.getInstance().invokeFeature("joinAudio", 0, null, null);
+```
+
+`请求参数`
+
+无
+
+`返回值`
+
+无
+
+### 离开语音频道 v2.1.0新增
+
+游戏方可调用`leaveAudio`离开语音频道，游戏用户不可使用语音服务（不可说话、不可听到其他游戏用户声音）。
+
+`调用示例`
+
+```java
+  
+//调用玩家是否是好友关系
+MgsApi.getInstance().invokeFeature("leaveAudio", 0, null, null);
+```
+
+`请求参数`
+
+无
+
+`返回值`
+
+无
+
+### 语音静音 v2.1.0新增
+
+游戏方可调用`muteAudio`语音静音（不可说话，可听到其他游戏用户声音）。
+
+`调用示例`
+
+```java
+  
+//调用玩家是否是好友关系
+MgsApi.getInstance().invokeFeature("muteAudio", 0, null, null);
+```
+
+`请求参数`
+
+无
+
+`返回值`
+
+无
+
+### 语音开麦 v2.1.0新增
+
+游戏方可调用`unmuteAudio`语音开麦（可说话，可听到其他游戏用户声音）。
+
+`调用示例`
+
+```java
+  
+//调用玩家是否是好友关系
+MgsApi.getInstance().invokeFeature("unmuteAudio", 0, null, null);
+```
+
+`请求参数`
+
+无
+
+`返回值`
+
+无
+
 ## 获取当前233乐园环境
 
 游戏方在调试过程中可能需要检测233乐园版本环境，可通过`getCurrentEnvironment`进行检测。
@@ -726,7 +857,7 @@ private void reportGameLogToMgs(int roomType, int roomLimit) {
     } 
 }
  
-``` 
+```
 
 `请求参数`
 
@@ -764,7 +895,7 @@ MgsApi.getInstance().registerMgsEventListener("exitGameEvent", new MgsEventListe
         //退出游戏事件通知，游戏方可以做一些游戏清理工作，比如清理房间等
     }
 });
-``` 
+```
 
 `修改房间名称`: `废弃`
 
@@ -777,7 +908,7 @@ MgsApi.getInstance().registerMgsEventListener("changeRoomNameEvent", new MgsEven
         //同步到游戏服务器
     }
 });
-``` 
+```
 
 
 ### MGS房间销毁通知
@@ -790,7 +921,7 @@ MgsApi.getInstance().registerMgsEventListener("destroyRoomEvent", new MgsEventLi
         //处理房间销毁的操作
     }
 });
-``` 
+```
 
 ## SDK销毁
 
@@ -816,3 +947,27 @@ void destroySdk();
 更多示例可参考DEMO中的`MgsSdkBridgeHelper`类。  
 `MgsSdkBridgeHelper`是SDK提供的快速接入的封装，游戏方可直接使用或根据业务特征基于`MgsSdkBridgeHelper`类进行二次封装。
 
+
+[1]:	#mgs%E5%AE%89%E5%8D%93sdk-api%E6%96%87%E6%A1%A3
+[2]:	#%E6%8E%A5%E5%85%A5%E6%96%B9%E5%BC%8F
+[3]:	#%E5%88%9D%E5%A7%8B%E5%8C%96
+[4]:	#sdk%E5%8A%A8%E6%80%81%E5%8A%9F%E8%83%BD%E6%8E%A5%E5%8F%A3
+[5]:	#%E7%99%BB%E5%BD%95
+[6]:	#%E6%9F%A5%E8%AF%A2%E6%8E%A5%E5%8F%A3%E6%98%AF%E5%90%A6%E5%8F%AF%E7%94%A8
+[7]:	#%E6%9F%A5%E8%AF%A2%E7%8E%A9%E5%AE%B6%E8%BF%9B%E5%85%A5%E6%88%BF%E9%97%B4%E6%97%B6%E7%9A%84%E6%93%8D%E4%BD%9C%E6%96%B9%E5%BC%8F
+[8]:	#%E5%88%9B%E5%BB%BA%E6%88%BF%E9%97%B4
+[9]:	#%E5%8A%A0%E5%85%A5%E6%88%BF%E9%97%B4
+[10]:	#%E7%A6%BB%E5%BC%80%E6%88%BF%E9%97%B4
+[11]:	#%E5%8A%A0%E5%85%A5%E9%98%9F%E4%BC%8D
+[12]:	#%E7%A6%BB%E5%BC%80%E9%98%9F%E4%BC%8D
+[13]:	#%E6%9F%A5%E7%9C%8B%E7%8E%A9%E5%AE%B6%E8%B5%84%E6%96%99%E5%8D%A1%E7%89%87
+[14]:	#%E6%A3%80%E6%B5%8B%E7%8E%A9%E5%AE%B6%E6%98%AF%E5%90%A6%E6%98%AF%E5%A5%BD%E5%8F%8B%E5%85%B3%E7%B3%BB
+[15]:	#%E6%B7%BB%E5%8A%A0%E5%A5%BD%E5%8F%8B-%E7%A4%BA%E4%BE%8B
+[16]:	#%E6%98%BE%E7%A4%BA%E6%82%AC%E6%B5%AE%E7%AA%97
+[17]:	#%E6%98%BE%E7%A4%BA%E6%B8%B8%E6%88%8F%E9%80%80%E5%87%BA%E7%A1%AE%E8%AE%A4%E6%A1%86
+[18]:	#%E8%8E%B7%E5%8F%96%E5%BD%93%E5%89%8D233%E4%B9%90%E5%9B%AD%E7%8E%AF%E5%A2%83
+[19]:	#%E6%97%A5%E5%BF%97%E4%B8%8A%E6%8A%A5
+[20]:	#%E5%85%A8%E5%B1%80%E7%9B%91%E5%90%ACsdk%E9%80%9A%E7%9F%A5%E4%BA%8B%E4%BB%B6
+[21]:	#%E9%80%80%E5%87%BA%E6%B8%B8%E6%88%8F%E4%BA%8B%E4%BB%B6%E9%80%9A%E7%9F%A5
+[22]:	#mgs%E6%88%BF%E9%97%B4%E9%94%80%E6%AF%81%E9%80%9A%E7%9F%A5
+[23]:	#sdk%E9%94%80%E6%AF%81
