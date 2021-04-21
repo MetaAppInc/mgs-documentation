@@ -704,7 +704,6 @@ MgsApi.getInstance().invokeFeature("showFloatingLayer", requestCode, params, nul
 
 ```java
   
-//调用玩家是否是好友关系
 MgsApi.getInstance().invokeFeature("showExitGameDialog", 0, null, null);
 ```
 
@@ -724,7 +723,6 @@ MgsApi.getInstance().invokeFeature("showExitGameDialog", 0, null, null);
 
 ```java
   
-//调用玩家是否是好友关系
 MgsApi.getInstance().invokeFeature("joinAudio", 0, null, null);
 ```
 
@@ -744,7 +742,6 @@ MgsApi.getInstance().invokeFeature("joinAudio", 0, null, null);
 
 ```java
   
-//调用玩家是否是好友关系
 MgsApi.getInstance().invokeFeature("leaveAudio", 0, null, null);
 ```
 
@@ -764,7 +761,6 @@ MgsApi.getInstance().invokeFeature("leaveAudio", 0, null, null);
 
 ```java
   
-//调用玩家是否是好友关系
 MgsApi.getInstance().invokeFeature("muteAudio", 0, null, null);
 ```
 
@@ -784,7 +780,6 @@ MgsApi.getInstance().invokeFeature("muteAudio", 0, null, null);
 
 ```java
   
-//调用玩家是否是好友关系
 MgsApi.getInstance().invokeFeature("unmuteAudio", 0, null, null);
 ```
 
