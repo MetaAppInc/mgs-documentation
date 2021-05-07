@@ -180,6 +180,8 @@ MgsApi.getInstance().invokeFeature("login", requestCode, null, new MgsFeatureLis
           String avatar = result.get("avatar");
           //玩家昵称
           String nickname = result.get("nickname");
+          //玩家性别
+          Int gender = result.get("gender")
 
           //上报登录结果给游戏服务端
           requestLoginResultToServer(openId, openCode, nickname, avatar);
