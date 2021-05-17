@@ -22,10 +22,15 @@
         - [离开语音频道 v2.1.0新增](#离开语音频道-v210新增)
         - [语音静音 v2.1.0新增](#语音静音-v210新增)
         - [语音开麦 v2.1.0新增](#语音开麦-v210新增)
+        - [支付](#支付)
     - [获取当前233乐园环境](#获取当前233乐园环境)
+    - [获取MGS配置接口](#获取mgs配置接口)
+        - [获取乐园的MGS版本号(getMgsVersionCode)](#获取乐园的mgs版本号getmgsversioncode)
     - [日志上报](#日志上报)
     - [全局监听SDK通知事件](#全局监听sdk通知事件)
         - [退出游戏事件通知](#退出游戏事件通知)
+        - [取消退出游戏事件通知 v2.2.0新增](#取消退出游戏事件通知-v220新增)
+        - [通知加入房间事件 v2.2.0新增](#通知加入房间事件-v220新增)
         - [MGS房间销毁通知](#mgs房间销毁通知)
     - [SDK销毁](#sdk销毁)
 
@@ -791,6 +796,56 @@ MgsApi.getInstance().invokeFeature("unmuteAudio", 0, null, null);
 
 无
 
+### 支付
+
+游戏若需要接入支付功能，需后台先开通支付能力。游戏只需要调用`pay`方法即可。
+
+`调用示例`
+
+```java
+ 
+ //请求参数
+String params = "{\"cpOrderId\":\"order1323222323\"，\"productCode\":\"12221221\"，\"productName\":\"100钻石\"，\"price\": 100，\"cpExtra\":\"extra_122232323\"}";
+//请求码,游戏可根据业务特征来就进行区分是哪次请求,默认可传0
+int requestCode = 0;
+//调用支付
+ MgsApi.getInstance().invokeFeature("pay", requestCode, params, new MgsFeatureListener() {
+            @Override
+            public void onSuccess(int requestCode, String resultJson) {
+                //支付成功回调
+                //resultJson = {"result": true,"cpOrderId":"1618471048914"} 
+            }
+
+            @Override
+            public void onFail(int requestCode, int code, String message) {
+                //失败回调
+            }
+        });
+```
+
+`请求参数`
+
+```java
+{
+  "cpOrderId":"order1323222323"，  //游戏自定义订单号
+  "productCode":"12221221"， //商品编码
+  "productName":"100钻石"， //商品名称
+  "price": 100， //价格,单位分
+  "cpExtra":"extra_122232323" //透传字段
+}
+
+```
+
+
+`返回值`
+
+```java
+{
+"result": true, //支付成功:true 失败：false
+"cpOrderId":"1618471048914"  //游戏方自定义的订单号
+}
+```
+
 ## 获取当前233乐园环境
 
 游戏方在调试过程中可能需要检测233乐园版本环境，可通过`getCurrentEnvironment`进行检测。
@@ -819,6 +874,67 @@ int envCode = MgsApi.getInstance().getCurrentEnvironment(context);
  //返回值 取值  0:测试环境 1:预发环境  2:线上环境
  
 ```
+
+## 获取MGS配置接口
+
+用于获取MGS相关配置信息的接口。该接口需要support
+
+API接口：
+
+```java
+
+/**
+* 动态获取MGS配置信息的接口
+* @param context context上下文
+* @param configName 配置名称
+* @param configJsonParams 配置参数
+* @param listener 回调
+*/
+void invokeMgsConfig(Context context, String configName, String configJsonParams, MgsConfigListener listener);
+
+```   
+
+回调监听API接口:
+
+```java
+public interface MgsConfigListener {
+    /**
+     * 结果回调
+     * @param resultData 返回值格式 {"code": 200,"message":"success","jsonData":""}
+     */
+    void onMgsConfigResult(String resultData);
+}
+
+```
+
+回调结果的`resultData`为json字符串格式，`{"code": 200,"message":"success","jsonData": object}`，
+其中`code`为200时为正确返回的结果，`jsonData`为实际结果值，根据获取的配置不同，返回格式不同。  
+
+
+### 获取乐园的MGS版本号(getMgsVersionCode)
+
+`调用示例`
+
+```java
+MgsApi.getInstance().invokeMgsConfig(appContext, "getMgsVersionCode", null, new MgsConfigListener() {
+    @Override
+    public void onMgsConfigResult(String resultData) {
+        //{"code":200,"message":"success","jsonData":"20200"} 
+
+        Map<String, Object> result = new Gson().fromJson(resultData,
+                new TypeToken<Map<String, Object>>() {}.getType());
+        String mgsVersionCode = (String) result.get("jsonData");
+    }
+});
+```
+
+`请求参数`
+
+无
+ 
+`返回值`
+
+`jsonData`为字符串类型
 
 ## 日志上报
 
@@ -897,6 +1013,19 @@ MgsApi.getInstance().registerMgsEventListener("exitGameEvent", new MgsEventListe
 });
 ```
 
+
+### 取消退出游戏事件通知 v2.2.0新增
+
+```java
+
+MgsApi.getInstance().registerMgsEventListener("cancelExitGameEvent", new MgsEventListener() {
+    @Override
+    public void onMgsEventHandle(String jsonData) {
+        //取消退出事件处理回调
+    }
+});
+```
+
 `修改房间名称`: `废弃`
 
 ```java
@@ -910,6 +1039,18 @@ MgsApi.getInstance().registerMgsEventListener("changeRoomNameEvent", new MgsEven
 });
 ```
 
+### 通知加入房间事件 v2.2.0新增
+
+```java
+
+MgsApi.getInstance().registerMgsEventListener("joinRoomEvent", new MgsEventListener() {
+    @Override
+    public void onMgsEventHandle(String jsonData) {
+          //resultJson = {"roomIdFromCp":"1121"}
+        //游戏处理是否可以加入逻辑
+    }
+});
+```
 
 ### MGS房间销毁通知
 
