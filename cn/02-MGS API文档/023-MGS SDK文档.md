@@ -827,11 +827,11 @@ int requestCode = 0;
 
 ```java
 {
-  "cpOrderId":"order1323222323"，  //游戏自定义订单号
-  "productCode":"12221221"， //商品编码
-  "productName":"100钻石"， //商品名称
-  "price": 100， //价格,单位分
-  "cpExtra":"extra_122232323" //透传字段
+  "cpOrderId": "order1323222323"，  //游戏自定义订单号，需要保证唯一性
+  "productCode": "12221221"， //商品编码
+  "productName": "100钻石"， //商品名称
+  "price": 100， //商品价格,单位：分
+  "cpExtra": "extra_122232323" //透传参数，平台会原封不动的回传给游戏方服务器
 }
 
 ```
