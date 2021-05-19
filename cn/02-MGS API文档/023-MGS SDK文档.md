@@ -742,7 +742,7 @@ String params = "{\"roomShowNum\":\"1234\"}";
 MgsApi.getInstance().invokeFeature("getCpRoomIdByRoomShowNum", requestCode, params, new MgsFeatureListener() {
             @Override
             public void onSuccess(int requestCode, String resultJson) {
-                //切换房间成功回调
+                //查找房间号成功回调
                  // resultJson =  {"roomIdFromCp":"游戏方房间号"}
             }
 
@@ -757,7 +757,7 @@ MgsApi.getInstance().invokeFeature("getCpRoomIdByRoomShowNum", requestCode, para
 
 ```java
 {
-  "roomShowNum":"1234"  //游戏方队伍ID
+  "roomShowNum":"1234"  //MGS房间号
 }
 ```
 
