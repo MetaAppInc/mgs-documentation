@@ -18,6 +18,7 @@
         - [添加好友-示例](#添加好友-示例)
         - [显示悬浮窗](#显示悬浮窗)
         - [显示游戏退出确认框](#显示游戏退出确认框)
+        - [根据233房间号查找游戏方的房间号](#根据233房间号查找游戏方的房间号)
         - [加入语音频道 v2.1.0新增](#加入语音频道-v210新增)
         - [离开语音频道 v2.1.0新增](#离开语音频道-v210新增)
         - [语音静音 v2.1.0新增](#语音静音-v210新增)
@@ -146,7 +147,13 @@ feature接口列表描述:
 `showUserProfile` 查看玩家资料信息  
 `isFriendShip` 检测玩家是否好友关系  
 `showFloatingLayer` 显示悬浮层(聊天:0 / 好友:1)  
+`showExitGameDialog` 显示游戏退出确认框
 `getCpRoomIdByRoomShowNum` 根据233房间号查找游戏方的房间号  
+`joinAudio` 加入语音频道 v2.1.0新增
+`leaveAudio` 离开语音频道 v2.1.0新增
+`muteAudio` 语音静音 v2.1.0新增
+`unmuteAudio` 语音开麦 v2.1.0新增
+`pay` 支付
 
 
 ### 登录
@@ -721,6 +728,47 @@ MgsApi.getInstance().invokeFeature("showExitGameDialog", 0, null, null);
 `返回值`
 
 无
+
+### 根据233房间号查找游戏方的房间号
+
+游戏方可调用 `getCpRoomIdByRoomShowNum` 通过233RoomId获取cp的RoomId
+
+`调用示例`
+
+```java
+//请求参数
+String params = "{\"roomShowNum\":\"1234\"}";
+
+MgsApi.getInstance().invokeFeature("getCpRoomIdByRoomShowNum", requestCode, params, new MgsFeatureListener() {
+            @Override
+            public void onSuccess(int requestCode, String resultJson) {
+                //切换房间成功回调
+                 // resultJson =  {"roomIdFromCp":"游戏方房间号"}
+            }
+
+            @Override
+            public void onFail(int requestCode, int code, String message) {
+                //失败回调
+            }
+        });
+```
+
+`请求参数`
+
+```java
+{
+  "roomShowNum":"1234"  //游戏方队伍ID
+}
+```
+
+
+`返回值`
+
+```java
+{
+  "roomIdFromCp":"1234", //游戏方房间号
+} 
+```
 
 ### 加入语音频道 v2.1.0新增
 
